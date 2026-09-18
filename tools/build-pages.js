@@ -10,6 +10,7 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 
 const ICONS = {
+  home: '<path d="M4 10.5 12 4l8 6.5"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/>',
   boards: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
   connections: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
   access: '<circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/>'
@@ -18,26 +19,37 @@ const ICONS = {
 const svg = (paths, size = 20) =>
   `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 
+// group: where the entry sits in the menu. null means it sits above the first heading.
 const PAGES = [
-  { file: 'boards.html', script: 'boards', name: 'The boards', icon: 'boards',
-    title: 'The boards', note: 'What needs you on each one, read from the board itself.',
-    description: 'What needs attention across the three HSG boards.' },
-  { file: 'connections.html', script: 'connections', name: 'Connections', icon: 'connections',
+  { file: 'home.html', script: 'home', name: 'Home', icon: 'home', group: null,
+    title: 'Waiting on you', note: 'Everything the three boards say needs you, in one list.',
+    description: 'Everything across the three HSG boards that needs attention.' },
+  { file: 'boards.html', script: 'boards', name: 'The boards', icon: 'boards', group: null,
+    title: 'The boards', note: 'Three boards. Open one to work in it.',
+    description: 'The three HSG boards, and a way in to each.' },
+  { file: 'connections.html', script: 'connections', name: 'Connections', icon: 'connections', group: 'Across the boards',
     title: 'Connections', note: 'What the three boards read, what is joined up, and what is not.',
     description: 'What the three boards read and what is not joined up.' },
-  { file: 'access.html', script: 'access', name: 'Who sees what', icon: 'access',
+  { file: 'access.html', script: 'access', name: 'Who sees what', icon: 'access', group: 'Across the boards',
     title: 'Who sees what', note: 'What each role can open on each board today.',
     description: 'What each role can open on each board.' }
 ];
 
 function menu(current) {
-  return PAGES.map((page) => {
+  const lines = [];
+  let group = null;
+  PAGES.forEach((page) => {
+    if (page.group !== group) {
+      group = page.group;
+      if (group) lines.push(`        <p class="menu-label">${group}</p>`);
+    }
     const here = page.file === current ? ' aria-current="page"' : '';
-    return `        <a class="menu-item" href="${page.file}"${here}>
-          ${svg(ICONS[page.icon])}
-          <span>${page.name}</span>
-        </a>`;
-  }).join('\n');
+    lines.push(`        <a class="menu-item" href="${page.file}"${here}>`);
+    lines.push(`          ${svg(ICONS[page.icon])}`);
+    lines.push(`          <span>${page.name}</span>`);
+    lines.push('        </a>');
+  });
+  return lines.join('\n');
 }
 
 const shell = (page, body) => `<!doctype html>
@@ -63,7 +75,7 @@ const shell = (page, body) => `<!doctype html>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="app" id="app">
     <aside class="sidebar" id="sidebar" aria-label="Main menu">
-      <a class="brand" href="boards.html"><img src="../assets/img/logo.svg" width="36" height="36" alt=""><span class="brand-text"><b>HSG boards</b><small>One way in</small></span></a>
+      <a class="brand" href="home.html"><img src="../assets/img/logo.svg" width="36" height="36" alt=""><span class="brand-text"><b>HSG boards</b><small>One way in</small></span></a>
 
       <nav class="menu" aria-label="Pages">
 ${menu(page.file)}
@@ -85,7 +97,7 @@ ${menu(page.file)}
         <button class="icon-button" id="menu-button" type="button" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
-        <a class="brand" href="boards.html"><img src="../assets/img/logo.svg" width="30" height="30" alt=""><span>HSG boards</span></a>
+        <a class="brand" href="home.html"><img src="../assets/img/logo.svg" width="30" height="30" alt=""><span>HSG boards</span></a>
       </header>
 
       <main class="app-main" id="main" tabindex="-1">
@@ -112,15 +124,26 @@ ${body}
 `;
 
 const BODIES = {
-  boards: `        <nav class="start-here" id="start-here" aria-label="Where to start"></nav>
+  home: `        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
 
-        <div class="board-cards" id="board-cards"></div>
+        <div class="stack" id="attention"></div>
 
         <section class="panel" aria-labelledby="rules-title">
           <div class="panel-head">
-            <h2 id="rules-title">True of all three</h2>
+            <h2 id="rules-title">True of all three boards</h2>
           </div>
           <ul class="decision-list" id="rule-list"></ul>
+        </section>`,
+
+  boards: `        <div class="board-doors" id="board-cards"></div>
+
+        <section class="panel" aria-labelledby="what-title">
+          <div class="panel-head">
+            <h2 id="what-title">What each one holds</h2>
+          </div>
+          <div class="table-wrap">
+            <table class="results" id="what-table"></table>
+          </div>
         </section>`,
 
   connections: `        <p class="notice">

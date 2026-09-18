@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0A130F" media="(prefers-color-scheme: dark)">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="robots" content="noindex">
-  <meta name="description" content="What each role can open on each board.">
-  <title>Who sees what · HSG boards</title>
+  <meta name="description" content="Everything across the three HSG boards that needs attention.">
+  <title>Waiting on you · HSG boards</title>
   <link rel="icon" href="../assets/img/logo.svg?v=e94586dc" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
       <a class="brand" href="home.html"><img src="../assets/img/logo.svg?v=e94586dc" width="36" height="36" alt=""><span class="brand-text"><b>HSG boards</b><small>One way in</small></span></a>
 
       <nav class="menu" aria-label="Pages">
-        <a class="menu-item" href="home.html">
+        <a class="menu-item" href="home.html" aria-current="page">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/></svg>
           <span>Home</span>
         </a>
@@ -37,7 +37,7 @@
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
           <span>Connections</span>
         </a>
-        <a class="menu-item" href="access.html" aria-current="page">
+        <a class="menu-item" href="access.html">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
           <span>Who sees what</span>
         </a>
@@ -65,30 +65,20 @@
       <main class="app-main" id="main" tabindex="-1">
         <div class="page-header">
           <div>
-            <h1>Who sees what</h1>
-            <p class="page-note">What each role can open on each board today.</p>
+            <h1>Waiting on you</h1>
+            <p class="page-note">Everything the three boards say needs you, in one list.</p>
           </div>
         </div>
 
-        <p class="notice">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
-          <span>This is what the boards do today, not a policy anybody has signed off. There is no shared account list yet, so each board has its own sign-in and access is agreed in conversation.</span>
-        </p>
+        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
 
-        <section class="panel" aria-labelledby="access-title">
-          <div class="panel-head">
-            <h2 id="access-title">What each role can open</h2>
-          </div>
-          <div class="table-wrap">
-            <table class="results" id="access-table"></table>
-          </div>
-        </section>
+        <div class="stack" id="attention"></div>
 
-        <section class="panel" aria-labelledby="signin-title">
+        <section class="panel" aria-labelledby="rules-title">
           <div class="panel-head">
-            <h2 id="signin-title">How signing in works today</h2>
+            <h2 id="rules-title">True of all three boards</h2>
           </div>
-          <dl class="figure-list" id="signin-list"></dl>
+          <ul class="decision-list" id="rule-list"></ul>
         </section>
       </main>
     </div>
@@ -99,6 +89,6 @@
   <script src="../assets/js/shared/data.js?v=2d9a26c9"></script>
   <script src="../assets/js/shared/app.js?v=8668030f"></script>
   <script src="../assets/js/shared/boards.js?v=147e9674"></script>
-  <script src="../assets/js/pages/access.js?v=2fcf9d49"></script>
+  <script src="../assets/js/pages/home.js?v=4f4cebf8"></script>
 </body>
 </html>

@@ -2,86 +2,36 @@ setUpShell();
 
 const answers = new Map();
 
-function toneClass(tone) {
-  return tone === 'stop' ? 'is-stop' : tone === 'hold' ? 'is-hold' : '';
-}
-
-// The strip at the top adds up what is waiting across all three, once every board has answered
-function showStartHere() {
-  const holder = document.getElementById('start-here');
-  holder.replaceChildren();
-
-  const waiting = [...answers.values()].filter((entry) => entry.summary);
-  if (!waiting.length) {
-    holder.append(create('p', 'start-empty', answers.size === BOARDS.length
-      ? 'No board answered, so there is nothing to add up. Each card below says the same.'
-      : 'Reading the boards…'));
-    return;
-  }
-
-  const total = waiting.reduce((sum, entry) => sum + entry.summary.needs.reduce((count, need) => count + need.count, 0), 0);
-  const unread = [...answers.values()].filter((entry) => !entry.summary).length;
-
-  holder.append(create('b', 'start-lead', 'Where to start'));
-  // In board order, not the order they answered in, so the row does not shuffle between visits
-  BOARDS.map((board) => answers.get(board.key)).filter((entry) => entry && entry.summary).forEach(({ board, summary }) => {
-    const count = summary.needs.reduce((sum, need) => sum + need.count, 0);
-    const link = create('a', `start-item ${count ? 'is-stop' : ''}`);
-    link.href = boardLink(board, summary.home);
-    link.append(create('b', '', formatNumber(count)), create('span', '', `on the ${board.name.toLowerCase()}`));
-    holder.append(link);
-  });
-
-  const words = unread
-    ? `${formatNumber(total)} things waiting across ${waiting.length} of the three boards. ${unread === 1 ? 'One board' : `${unread} boards`} did not answer.`
-    : `${formatNumber(total)} things waiting across the three boards.`;
-  holder.append(create('small', 'start-note', words));
-}
-
+// Three doors. The whole card is the link, so there is nothing to aim at.
 function boardCard(board, summary, problem) {
-  const card = create('section', 'panel board-card-panel');
+  const card = create('a', 'board-door');
+  card.href = boardLink(board, summary ? summary.home : '');
 
-  const head = create('div', 'panel-head');
-  const heading = create('div');
-  heading.append(create('h2', '', board.name), create('p', 'panel-note', board.what));
-  head.append(heading);
+  const top = create('div', 'board-door-top');
+  top.append(create('h2', '', board.name), icon(ICONS.forward, 22));
+  card.append(top, create('p', 'board-door-what', board.what));
 
   if (summary) {
-    const open = create('a', 'button button-secondary button-inline');
-    open.href = boardLink(board, summary.home);
-    open.textContent = 'Open it';
-    head.append(open);
-  }
-  card.append(head);
-
-  if (!summary) {
-    card.append(create('p', 'empty', problem));
-    return card;
-  }
-
-  const figures = create('div', 'board-figures');
-  summary.figures.forEach((figure) => {
-    const item = create('div', 'board-figure');
-    item.append(create('span', '', figure.label), create('b', '', figure.value), create('small', '', figure.note));
-    figures.append(item);
-  });
-  card.append(figures);
-
-  const needs = summary.needs.filter((need) => need.count);
-  if (!needs.length) {
-    card.append(create('p', 'empty', 'Nothing on this board is waiting on anyone.'));
-  } else {
-    const list = create('div', 'start-here');
-    needs.forEach((need) => {
-      const link = create('a', `start-item ${toneClass(need.tone)}`);
-      link.href = boardLink(board, need.href);
-      link.append(create('b', '', formatNumber(need.count)), create('span', '', need.count === 1 ? need.one : need.many));
-      list.append(link);
+    const figures = create('div', 'board-figures');
+    summary.figures.forEach((figure) => {
+      const item = create('div', 'board-figure');
+      item.append(create('span', '', figure.label), create('b', '', figure.value), create('small', '', figure.note));
+      figures.append(item);
     });
-    card.append(list);
+    card.append(figures);
+
+    const count = summary.needs.reduce((sum, need) => sum + need.count, 0);
+    const foot = create('div', 'board-door-foot');
+    foot.append(statusChip({
+      tone: count ? 'changed' : 'good',
+      text: count ? `${formatNumber(count)} waiting on you` : 'Nothing waiting'
+    }));
+    foot.append(create('small', '', `Read ${summary.read}`));
+    card.append(foot);
+  } else {
+    card.append(create('p', 'empty', problem || 'Reading this board…'));
   }
 
-  card.append(create('p', 'panel-note', `Read ${summary.read}. Every figure on this card came from the board itself, so the two cannot disagree.`));
   return card;
 }
 
@@ -90,36 +40,41 @@ function showCards() {
   holder.replaceChildren();
   BOARDS.forEach((board) => {
     const entry = answers.get(board.key);
-    if (!entry) {
-      const waitingCard = create('section', 'panel board-card-panel');
-      const head = create('div', 'panel-head');
-      head.append(create('h2', '', board.name));
-      waitingCard.append(head, create('p', 'empty', 'Reading this board…'));
-      holder.append(waitingCard);
-      return;
-    }
-    holder.append(boardCard(board, entry.summary, entry.problem));
+    holder.append(boardCard(board, entry && entry.summary, entry && entry.problem));
   });
 }
 
-function showRules() {
-  const holder = document.getElementById('rule-list');
-  holder.replaceChildren();
-  RULES.forEach((rule) => {
-    const item = create('li');
-    const top = create('div', 'decision-top');
-    top.append(create('h3', '', rule.title));
-    item.append(top, create('p', '', rule.detail), create('p', 'panel-note', rule.action));
-    holder.append(item);
+function showWhat() {
+  const table = document.getElementById('what-table');
+  table.replaceChildren();
+
+  const head = create('thead');
+  const headRow = create('tr');
+  ['Board', 'What it holds', 'Who opens it'].forEach((label) => {
+    const cell = create('th', '', label);
+    cell.scope = 'col';
+    headRow.append(cell);
   });
+  head.append(headRow);
+
+  const body = create('tbody');
+  BOARDS.forEach((board) => {
+    const row = create('tr');
+    const first = create('th', 'cell-name');
+    first.scope = 'row';
+    first.append(create('b', '', board.name));
+    row.append(first, create('td', '', board.holds), create('td', '', board.who));
+    body.append(row);
+  });
+
+  table.append(head, body);
+  labelCells(table);
 }
 
 showCards();
-showStartHere();
-showRules();
+showWhat();
 
 askBoards((board, summary, problem) => {
   answers.set(board.key, { board, summary, problem });
   showCards();
-  showStartHere();
 });

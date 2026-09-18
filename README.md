@@ -29,7 +29,8 @@ This means two things worth knowing:
 
 | Page | What it does |
 | --- | --- |
-| `pages/boards.html` | A card per board: its headline figures, what is waiting on it with a link straight to that group, and when it was read. Above them, what is waiting across all three added up. Below them, the four things that are true of all three boards. |
+| `pages/home.html` | The landing page: everything the three boards say needs attention, pulled into one list. **Needs a decision** first, then **Waiting on someone**, each row saying how many, what it is and which board it came from, and each row a link straight to that group on that board. Four figures above it, and the things that are true of all three boards below. |
+| `pages/boards.html` | Three cards, one per board. The whole card is the way in. Each shows that board's headline figures, how many things are waiting on it and when it was read. |
 | `pages/connections.html` | Every workbook the three boards read, which board reads it, and what to know about it. Then what is not joined up — a mail to a registration, a lead to a registration, a lead to a mail, and the missing shared account list. |
 | `pages/access.html` | What each role can open on each board today, and how signing in actually works. |
 | `index.html` | Sign in, or look around. |
@@ -86,3 +87,4 @@ All four sites share one design, so a person who knows one can read the others. 
 - One account list for all four, so access is set in one place rather than agreed in conversation
 - Join a registration back to the lead and the campaign that started it, which is what would let any board answer "did it work?"
 - A note on each card when a board's reading is older than the others, so two figures are not compared across different days
+- More in the menu as it is needed: the group is set up so a page can be added under **Across the boards** without moving anything

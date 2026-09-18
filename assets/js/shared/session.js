@@ -2,7 +2,7 @@
 const SESSION_KEY = 'hsg-hub-session';
 
 const DEMO_USER = {
-  name: 'Jan Prinsloo',
+  name: 'Thabo Maritz',
   role: 'Head of sales and marketing',
   team: 'HSG'
 };
@@ -38,7 +38,7 @@ function endSession() {
 const pageType = document.documentElement.dataset.page;
 const signedIn = readSession();
 const SIGN_IN_PAGE = '../index.html';
-const HOME_PAGE = pageType === 'app' ? 'boards.html' : 'pages/boards.html';
+const HOME_PAGE = pageType === 'app' ? 'home.html' : 'pages/home.html';
 
 if (pageType === 'app' && !signedIn) location.replace(SIGN_IN_PAGE);
 if (pageType === 'auth' && signedIn) location.replace(HOME_PAGE);

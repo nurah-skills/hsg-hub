@@ -80,6 +80,7 @@ const ICONS = {
   up: ['M12 19V5', 'M6 11l6-6 6 6'],
   down: ['M12 5v14', 'M6 13l6 6 6-6'],
   menu: ['M4 7h16', 'M4 12h16', 'M4 17h16'],
+  forward: ['M5 12h13', 'm12.5 5.5 6.5 6.5-6.5 6.5'],
   download: ['M12 4v10', 'm7.5 10.5 4.5 4.5 4.5-4.5', 'M5 19h14'],
   about: ['M12 11v5.5', 'M12 7.6v.4', 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z'],
   rows: ['M4 7h16', 'M4 12h16', 'M4 17h10'],
@@ -115,8 +116,8 @@ function showToast(message, action) {
 function buildTabBar(sidebar) {
   const nav = create('nav', 'tabbar');
   nav.setAttribute('aria-label', 'Quick menu');
-  const current = location.pathname.split('/').pop() || 'boards.html';
-  const pages = [['boards.html', 'Boards'], ['connections.html', 'Connections'], ['access.html', 'Access']];
+  const current = location.pathname.split('/').pop() || 'home.html';
+  const pages = [['home.html', 'Home'], ['boards.html', 'Boards'], ['connections.html', 'Connections']];
 
   pages.forEach(([href, label]) => {
     const item = sidebar.querySelector(`.menu-item[href="${href}"]`);
@@ -437,7 +438,7 @@ function buildFooter() {
 }
 
 function markCurrentPage(sidebar) {
-  const here = location.pathname.split('/').pop() || 'boards.html';
+  const here = location.pathname.split('/').pop() || 'home.html';
   sidebar.querySelectorAll('.menu-item').forEach((item) => {
     if (item.getAttribute('href') === here) item.setAttribute('aria-current', 'page');
     else item.removeAttribute('aria-current');

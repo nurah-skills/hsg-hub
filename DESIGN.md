@@ -64,8 +64,9 @@ These are design decisions, not missing work:
 
 - **The menu** — a light column on `--card`, held off the page by a single hairline, with the three boards themselves under **Other boards** at the foot. Three pages fit easily, but the same `clamp()` sizing is kept so the menu behaves like the others on a short screen.
 - **The page header** — the page name and its one-line note, closed by a hairline.
-- **The board card** — one panel per board: the name, what it is for, a couple of that board's headline figures, then the counts that are waiting on it as links into the right group, and the time it was read. A board that has not answered shows the reason in its place.
-- **Where to start** — a row at the top holding one count per board, and a line saying how many things are waiting across the three. It fills in as the boards answer.
+- **The attention list** — on Home, everything the three boards say is waiting, in two groups: **Needs a decision**, meaning somebody has to choose, and **Waiting on someone**, meaning it is moving but not finished. Each row is a count, what it is, and a tag saying which board it came from, and the whole row links into that group on that board. Which group an item lands in is the board's own call, set in its `summary.js`, because the board knows whether a thing is a decision or a queue.
+- **The board door** — on The boards, one card per board and the whole card is the link. It shows that board's headline figures, how many things are waiting and when it was read. A board that has not answered shows the reason in its place.
+
 - **`.panel`** — the surface everything else sits in.
 - **Tables** (`.results`) show a heading row on a laptop. On a phone the heading row is hidden and each cell carries its own heading through `data-label`.
 - **Sign in** — one card resting on `--page`: the green panel on the left with the brand, the lead line and three points; the form on the right. The panel's soft lights are radial gradients on a `::after`, never images. Under 900px the panel drops away and the form fills the screen.

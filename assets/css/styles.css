@@ -1447,3 +1447,61 @@ tbody tr:has(.cell-pick input:checked) { background: var(--accent-soft); }
 @media (max-width: 560px) {
   .board-cards { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Three doors. The whole card is the link, so there is nothing to aim at. */
+.board-doors { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+.board-door {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shell);
+  color: var(--ink);
+  font-weight: 400;
+  text-decoration: none;
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+.board-door:hover { box-shadow: var(--shell), 0 0 0 1px var(--accent); }
+.board-door-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.board-door-top h2 { font-size: 20px; font-weight: 600; }
+.board-door-top svg { flex: none; color: var(--accent-ink); }
+.board-door-what { color: var(--muted); }
+.board-door-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 4px; }
+.board-door-foot small { font-size: 13px; color: var(--muted); }
+
+/* Everything waiting, from all three boards, as one list */
+.stack { display: flex; flex-direction: column; gap: 22px; }
+.attention-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.attention-list li + li { border-top: 1px solid var(--line); }
+.attention-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 12px 10px;
+  margin-inline: -10px;
+  border-radius: var(--radius-control);
+  color: var(--ink);
+  font-weight: 400;
+  text-decoration: none;
+}
+.attention-row:hover { background: var(--field); }
+.attention-count { flex: none; min-width: 64px; font-family: var(--heading); font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.attention-what { flex: 1; min-width: 0; }
+.attention-board {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--field);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .board-doors { grid-template-columns: minmax(0, 1fr); }
+  .attention-row { flex-wrap: wrap; gap: 6px 12px; }
+  .attention-what { flex-basis: 100%; order: 3; }
+}
