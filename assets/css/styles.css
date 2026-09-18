@@ -1505,3 +1505,21 @@ tbody tr:has(.cell-pick input:checked) { background: var(--accent-soft); }
   .attention-row { flex-wrap: wrap; gap: 6px 12px; }
   .attention-what { flex-basis: 100%; order: 3; }
 }
+
+/* The three colleges, by their own marks, at the foot of the sign-in panel */
+.auth-colleges { position: relative; z-index: 1; }
+.auth-colleges ul { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0 0; padding: 0; }
+.auth-colleges li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: var(--radius-control);
+  background: rgba(255, 255, 255, .92);
+}
+.auth-colleges img { display: block; width: auto; height: 30px; }
+
+@media (max-width: 900px) {
+  .auth-colleges ul { gap: 8px; }
+  .auth-colleges img { height: 26px; }
+}

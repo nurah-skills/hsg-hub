@@ -386,11 +386,6 @@ function statusChip(pace) {
 }
 
 // The other two boards sit beside this one, and the mail tool can be read again from here
-const RELATED = [
-  [`${SITE_ROOT}every-sale-matters/pages/home.html`, 'Sales scoreboard'],
-  [`${SITE_ROOT}hsg-mailer-management/pages/overview.html`, 'Mailer board'],
-  [`${SITE_ROOT}hsg-lead-tracker/pages/actions.html`, 'Lead tracker']
-];
 
 // The header is built here rather than read out of the page, so a browser holding an older
 // copy of the HTML still gets the right header from the current script.
@@ -412,24 +407,6 @@ function buildHeaderTools() {
   header.append(tools);
 }
 
-function buildRelatedLinks(sidebar) {
-  const holder = create('div', 'sidebar-links');
-  holder.append(create('p', 'menu-label', 'Other boards'));
-  RELATED.forEach(([href, label]) => {
-    const link = create(href === '#' ? 'span' : 'a', 'sidebar-link', label);
-    if (href === '#') {
-      link.append(create('span', 'tag', 'Soon'));
-    } else {
-      link.href = href;
-      link.target = '_blank';
-      link.rel = 'noreferrer';
-      link.append(icon(ICONS.external, 14));
-    }
-    holder.append(link);
-  });
-  sidebar.querySelector('.sidebar-user').before(holder);
-}
-
 // One line at the foot of every page, saying what this board is and is not
 function buildFooter() {
   const main = document.getElementById('main');
@@ -449,7 +426,10 @@ function setUpShell() {
   const user = readSession();
   document.getElementById('user-initials').textContent = initials(user.name);
   document.getElementById('user-name').textContent = user.name;
-  document.getElementById('user-role').textContent = `${user.role} · ${user.team}`;
+  // Not everybody carries a title, and an empty line under a name looks like a mistake
+  const role = document.getElementById('user-role');
+  role.textContent = [user.role, user.team].filter(Boolean).join(' · ');
+  role.hidden = !role.textContent;
 
   const app = document.getElementById('app');
   const body = document.querySelector('.app-body');
@@ -487,7 +467,6 @@ function setUpShell() {
   });
 
   markCurrentPage(sidebar);
-  buildRelatedLinks(sidebar);
   buildHeaderTools();
   buildFooter();
 

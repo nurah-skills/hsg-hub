@@ -9,6 +9,9 @@ const URGENCY = [
   ['hold', 'Waiting on someone', 'Moving, but waiting on a person, a check or a reply.']
 ];
 
+const GROUPINGS = [['urgency', 'By what it needs'], ['board', 'By board']];
+const state = { grouping: GROUPINGS.some(([key]) => key === Params.get('group', '')) ? Params.get('group', '') : 'urgency' };
+
 function everything() {
   const items = [];
   BOARDS.forEach((board) => {
@@ -63,6 +66,31 @@ function showTiles() {
   document.getElementById('home-tiles').replaceChildren(...tiles.map(statTile));
 }
 
+function attentionRow(item, withBoard) {
+  const row = create('li');
+  const link = create('a', 'attention-row');
+  link.href = item.href;
+  link.append(create('b', 'attention-count', formatNumber(item.count)), create('span', 'attention-what', item.what));
+  if (withBoard) link.append(create('span', 'attention-board', item.board.name));
+  else link.append(statusChip({ tone: item.tone === 'stop' ? 'changed' : 'waiting', text: item.tone === 'stop' ? 'A decision' : 'Waiting' }));
+  row.append(link);
+  return row;
+}
+
+function attentionPanel(title, detail, chip, items, withBoard) {
+  const section = create('section', 'panel');
+  const head = create('div', 'panel-head');
+  const heading = create('div');
+  heading.append(create('h2', '', title), create('p', 'panel-note', detail));
+  head.append(heading, chip);
+  section.append(head);
+
+  const list = create('ul', 'attention-list');
+  items.forEach((item) => list.append(attentionRow(item, withBoard)));
+  section.append(list);
+  return section;
+}
+
 function showList() {
   const holder = document.getElementById('attention');
   holder.replaceChildren();
@@ -77,36 +105,36 @@ function showList() {
     return;
   }
 
-  URGENCY.forEach(([tone, title, detail]) => {
-    const group = items.filter((item) => item.tone === tone).sort((a, b) => b.count - a.count);
-    if (!group.length) return;
-
-    const section = create('section', 'panel');
-    const head = create('div', 'panel-head');
-    const heading = create('div');
-    heading.append(create('h2', '', title), create('p', 'panel-note', detail));
-    head.append(heading, statusChip({
-      tone: tone === 'stop' ? 'changed' : 'waiting',
-      text: `${formatNumber(group.reduce((sum, item) => sum + item.count, 0))} in all`
-    }));
-    section.append(head);
-
-    const list = create('ul', 'attention-list');
-    group.forEach((item) => {
-      const row = create('li');
-      const link = create('a', 'attention-row');
-      link.href = item.href;
-      link.append(
-        create('b', 'attention-count', formatNumber(item.count)),
-        create('span', 'attention-what', item.what),
-        create('span', `attention-board is-${item.board.key}`, item.board.name)
-      );
-      row.append(link);
-      list.append(row);
+  if (state.grouping === 'board') {
+    BOARDS.forEach((board) => {
+      const group = items.filter((item) => item.board.key === board.key)
+        .sort((a, b) => (a.tone === b.tone ? b.count - a.count : a.tone === 'stop' ? -1 : 1));
+      if (!group.length) return;
+      const decisions = group.filter((item) => item.tone === 'stop').reduce((sum, item) => sum + item.count, 0);
+      holder.append(attentionPanel(
+        board.name,
+        board.what,
+        statusChip({ tone: decisions ? 'changed' : 'waiting', text: decisions ? `${formatNumber(decisions)} to decide` : 'Nothing to decide' }),
+        group,
+        false
+      ));
     });
-    section.append(list);
-    holder.append(section);
-  });
+  } else {
+    URGENCY.forEach(([tone, title, detail]) => {
+      const group = items.filter((item) => item.tone === tone).sort((a, b) => b.count - a.count);
+      if (!group.length) return;
+      holder.append(attentionPanel(
+        title,
+        detail,
+        statusChip({
+          tone: tone === 'stop' ? 'changed' : 'waiting',
+          text: `${formatNumber(group.reduce((sum, item) => sum + item.count, 0))} in all`
+        }),
+        group,
+        true
+      ));
+    });
+  }
 
   const missing = BOARDS.filter((board) => {
     const entry = answers.get(board.key);
@@ -131,10 +159,56 @@ function showRules() {
   });
 }
 
+// The boards are read at different moments. Two figures from two days are not a comparison,
+// so the page says when each was read rather than letting them look like one reading.
+function showReadings() {
+  const holder = document.getElementById('readings');
+  const read = BOARDS.map((board) => {
+    const entry = answers.get(board.key);
+    return entry && entry.summary ? `${board.name} ${entry.summary.read}` : null;
+  }).filter(Boolean);
+
+  if (!read.length) {
+    holder.textContent = 'Asking each board for its own figures…';
+    return;
+  }
+  holder.textContent = `Read: ${read.join(' · ')}. Each board is read at its own moment, so a figure from one is not a figure from another.`;
+}
+
+function showExport() {
+  const button = document.getElementById('home-export');
+  const items = everything();
+  button.replaceChildren(icon(ICONS.download, 16), create('span', '', items.length ? `Save this list (${formatNumber(items.length)})` : 'Save this list'));
+  button.disabled = !items.length;
+}
+
 function render() {
+  showReadings();
   showTiles();
   showList();
+  showExport();
 }
+
+buildSegmented(document.getElementById('group-picker'), GROUPINGS, state.grouping, (value) => {
+  state.grouping = value;
+  Params.set({ group: value === 'urgency' ? '' : value });
+  showList();
+});
+
+document.getElementById('home-export').addEventListener('click', () => {
+  const items = everything();
+  downloadRows(
+    'waiting-on-you',
+    ['Board', 'What it needs', 'How many', 'What it is', 'Where to look'],
+    items.map((item) => [
+      item.board.name,
+      item.tone === 'stop' ? 'A decision' : 'Waiting on someone',
+      item.count,
+      item.what,
+      new URL(item.href, location.href).href
+    ])
+  );
+});
 
 render();
 showRules();

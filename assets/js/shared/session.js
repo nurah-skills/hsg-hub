@@ -2,9 +2,9 @@
 const SESSION_KEY = 'hsg-hub-session';
 
 const DEMO_USER = {
-  name: 'Thabo Maritz',
-  role: 'Head of sales and marketing',
-  team: 'HSG'
+  name: 'Jan Badenhorst',
+  role: '',
+  team: ''
 };
 
 function readSession() {

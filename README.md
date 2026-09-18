@@ -29,7 +29,7 @@ This means two things worth knowing:
 
 | Page | What it does |
 | --- | --- |
-| `pages/home.html` | The landing page: everything the three boards say needs attention, pulled into one list. **Needs a decision** first, then **Waiting on someone**, each row saying how many, what it is and which board it came from, and each row a link straight to that group on that board. Four figures above it, and the things that are true of all three boards below. |
+| `pages/home.html` | The landing page: everything the three boards say needs attention, pulled into one list. **Needs a decision** first, then **Waiting on someone**, each row saying how many, what it is and which board it came from, and each row a link straight to that group on that board. Switch it to **By board** to read it a board at a time. **Save this list** writes the whole thing to a spreadsheet file for a meeting. Above it, four figures and a line naming when each board was read, because two boards read on different days are not one reading. |
 | `pages/boards.html` | Three cards, one per board. The whole card is the way in. Each shows that board's headline figures, how many things are waiting on it and when it was read. |
 | `pages/connections.html` | Every workbook the three boards read, which board reads it, and what to know about it. Then what is not joined up — a mail to a registration, a lead to a registration, a lead to a mail, and the missing shared account list. |
 | `pages/access.html` | What each role can open on each board today, and how signing in actually works. |
@@ -88,3 +88,4 @@ All four sites share one design, so a person who knows one can read the others. 
 - Join a registration back to the lead and the campaign that started it, which is what would let any board answer "did it work?"
 - A note on each card when a board's reading is older than the others, so two figures are not compared across different days
 - More in the menu as it is needed: the group is set up so a page can be added under **Across the boards** without moving anything
+- Flag a board whose reading is more than a day behind the others, rather than only naming the times

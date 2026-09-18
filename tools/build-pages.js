@@ -124,7 +124,14 @@ ${body}
 `;
 
 const BODIES = {
-  home: `        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
+  home: `        <div class="controls">
+          <div class="segmented" id="group-picker" role="group" aria-label="Group by"></div>
+          <button class="button button-secondary button-inline" id="home-export" type="button"></button>
+        </div>
+
+        <p class="panel-note" id="readings"></p>
+
+        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
 
         <div class="stack" id="attention"></div>
 
