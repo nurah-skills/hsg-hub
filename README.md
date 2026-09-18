@@ -1,0 +1,88 @@
+# HSG boards
+
+One front door to the three HSG boards: what needs you on each one, and a way straight in.
+
+**Live:** https://nurah-skills.github.io/hsg-hub/
+
+## The three boards
+
+| Board | What it holds | Live |
+| --- | --- | --- |
+| Sales scoreboard | Registrations and cash by person and college, with the cards that recognise them. | https://nurah-skills.github.io/every-sale-matters/ |
+| Mailer board | What is ready to send, what needs a decision, and what the mail did. | https://nurah-skills.github.io/hsg-mailer-management/ |
+| Lead tracker | Where the survey leads went, how long they waited, and what was recorded. | https://nurah-skills.github.io/hsg-lead-tracker/ |
+
+## Where the figures come from
+
+**The hub keeps no figures of its own.** Every number on it is asked of the board that owns it, so the hub and the board can never disagree.
+
+All four sites sit on the same address, so the hub opens each board's `summary.html` in a hidden frame. That page runs the board's own data and posts back a small summary — what is waiting, a couple of headline figures, and when the board was last read. The hub shows what comes back.
+
+A board that does not answer within eight seconds is shown as **unread**, with the reason. It is never guessed at, and no figure is ever carried over from a previous visit.
+
+This means two things worth knowing:
+
+- Changing a figure on a board changes it on the hub, with no work here.
+- Renaming or moving a board breaks its card until `assets/js/shared/data.js` is updated. The card says so rather than going quiet.
+
+## Pages
+
+| Page | What it does |
+| --- | --- |
+| `pages/boards.html` | A card per board: its headline figures, what is waiting on it with a link straight to that group, and when it was read. Above them, what is waiting across all three added up. Below them, the four things that are true of all three boards. |
+| `pages/connections.html` | Every workbook the three boards read, which board reads it, and what to know about it. Then what is not joined up — a mail to a registration, a lead to a registration, a lead to a mail, and the missing shared account list. |
+| `pages/access.html` | What each role can open on each board today, and how signing in actually works. |
+| `index.html` | Sign in, or look around. |
+
+## The summary file in each board
+
+Each of the three repos carries two small files:
+
+```
+summary.html            a page with no design, loaded by the hub in a hidden frame
+assets/js/summary.js    builds the summary from that board's own data and posts it back
+```
+
+If a board gains a figure worth showing on the hub, that is the file to change — not anything here.
+
+The message is posted to `location.origin` and the hub checks the origin before reading it, so nothing off this address can put a figure on the hub.
+
+## Sample data
+
+The three boards behind this one carry made-up names, campaigns, leads and results. Nothing real is on any of them.
+
+## Working on it
+
+Plain HTML, CSS and JavaScript, with nothing to build.
+
+Because the hub reads its neighbours, it cannot be tested on its own. Put the four folders side by side and serve the folder that holds them:
+
+```
+npx.cmd serve .
+```
+
+Then open `hsg-hub/index.html` from that server. Served on its own, every board card will honestly say it got no answer.
+
+After changing the shell or adding a page:
+
+```
+node tools/build-pages.js
+```
+
+Before committing a change to anything in `assets/`:
+
+```
+node tools/stamp-assets.js
+```
+
+Changes pushed to the `main` branch go live on GitHub Pages within a few minutes.
+
+## How it looks
+
+All four sites share one design, so a person who knows one can read the others. It is written down in [DESIGN.md](DESIGN.md).
+
+## Still to do
+
+- One account list for all four, so access is set in one place rather than agreed in conversation
+- Join a registration back to the lead and the campaign that started it, which is what would let any board answer "did it work?"
+- A note on each card when a board's reading is older than the others, so two figures are not compared across different days
