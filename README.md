@@ -33,6 +33,7 @@ This means two things worth knowing:
 | `pages/boards.html` | Three cards, one per board. The whole card is the way in. Each shows that board's headline figures, how many things are waiting on it and when it was read. |
 | `pages/connections.html` | Every workbook the three boards read, which board reads it, and what to know about it. Then what is not joined up — a mail to a registration, a lead to a registration, a lead to a mail, and the missing shared account list. |
 | `pages/access.html` | What each role can open on each board today, and how signing in actually works. |
+| `pages/whats-next.html` | What these boards cannot do yet: five things in the order they would have to be done, each saying what it would answer, what has to happen first, where it would show up and how big it is. Then a shorter list of what comes after. Nothing on it is built, and it says so. |
 | `index.html` | Sign in, or look around. |
 
 ## The summary file in each board
@@ -81,6 +82,10 @@ Changes pushed to the `main` branch go live on GitHub Pages within a few minutes
 ## How it looks
 
 All four sites share one design, so a person who knows one can read the others. It is written down in [DESIGN.md](DESIGN.md).
+
+## What is not built
+
+The **What's next** page is the list, and it is the honest version: each item says what is in the way, not just what it would be nice to have. Two of them would become their own page, so they sit in the menu under **Coming next** with a **Soon** tag and open the part of that page which explains them. Nothing else in the menu is a control that does nothing.
 
 ## Still to do
 

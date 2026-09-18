@@ -95,4 +95,64 @@ const RULES = [
   }
 ];
 
+
+// What is not built. Each one says what it would answer and what has to happen first,
+// because a list of wishes is worth nothing next to a list of what is in the way.
+// They are in the order they would have to be done: each one leans on the ones above it.
+const NEXT = [
+  {
+    id: 'readings',
+    title: 'Keep the readings, so a figure has a direction',
+    page: null,
+    answers: 'Is it getting better or worse? Every board holds one reading and forgets the last one, so “1 050 leads waiting” reads the same whether it was 600 last week or 1 400.',
+    needs: 'Somewhere to keep one reading a day. Each board already builds its own summary; a stored, dated copy of that is enough to draw a line.',
+    where: 'A small run behind each figure on the boards, and the thing everything below is built on.',
+    size: 'Small, once there is somewhere to write.'
+  },
+  {
+    id: 'analytics',
+    title: 'Ask a question across the three boards',
+    page: 'Analytics',
+    answers: 'How did Matric College do last month, across mail, leads and registrations at once? Today that means opening three boards, reading three periods and holding the answer in your head.',
+    needs: 'The kept readings above, and each board reporting its figures split by college and by week rather than as one number. Then a page where a period, a college and a measure are chosen and drawn.',
+    where: 'An **Analytics** page here, with the boards left as they are.',
+    size: 'Medium, and it cannot start before the readings are kept.'
+  },
+  {
+    id: 'alerts',
+    title: 'A Monday morning email',
+    page: 'Alerts',
+    answers: 'What needs me this week, without having to remember to look.',
+    needs: 'Something that can send mail on a schedule, and one address list. It sends what the home page already works out, so nothing new has to be counted.',
+    where: 'An **Alerts** page here, to say who gets it and on which morning.',
+    size: 'Small.'
+  },
+  {
+    id: 'assign',
+    title: 'Name an owner from the board',
+    page: null,
+    answers: 'Who is doing something about it. Today a board can say three forms have nobody against them, and the fixing happens somewhere else entirely.',
+    needs: 'Write access to the source sheets, real sign-in so a change is attributed, and a decision about who may assign to whom. It would be the first time any board writes rather than only reads, so it needs care.',
+    where: 'On the lead tracker beside a form with no owner, and on the mailer board beside a decision.',
+    size: 'Medium, and it changes what these boards are.'
+  },
+  {
+    id: 'join',
+    title: 'Join a registration to the lead and the campaign that started it',
+    page: null,
+    answers: 'Did it work. This is the question none of the three boards will answer, and the reason they will not is that nothing connects a registration back to the submission or the mail that came before it.',
+    needs: 'One identifier a person carries from the form, through the mail, to the registration. Until that exists on the sheets, no amount of work on these boards can produce it.',
+    where: 'Everywhere. It is the difference between counting activity and knowing what the activity did.',
+    size: 'Large, and it starts with the sheets rather than with a board.'
+  }
+];
+
+// Also on the list, in the order I would do them
+const LATER = [
+  ['Reconcile what the forms sent against what arrived', 'Nothing checks that every submission a form issued reached a sheet, so a lead that vanished between the two is invisible to every board.'],
+  ['One sign-in for all four', 'Access is agreed in conversation today. One account list would mean it can be given and taken away in one place.'],
+  ['Record the decision, not just the outcome', 'When something is settled, keep the reason next to it, so the same question is not asked again next month.'],
+  ['Flag a board whose reading is behind the others', 'The home page names the times. It could say plainly when one board is a day behind, rather than leaving it to be noticed.']
+];
+
 const formatNumber = (value) => Math.round(value).toLocaleString('en-ZA').replace(/,/g, ' ');

@@ -13,7 +13,10 @@ const ICONS = {
   home: '<path d="M4 10.5 12 4l8 6.5"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/>',
   boards: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/>',
   connections: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
-  access: '<circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/>'
+  access: '<circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/>',
+  next: '<path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z"/><path d="M12 7.5V12l3.2 2"/>',
+  analytics: '<path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/>',
+  alerts: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 20a2 2 0 0 0 3 0"/>'
 };
 
 const svg = (paths, size = 20) =>
@@ -32,7 +35,17 @@ const PAGES = [
     description: 'What the three boards read and what is not joined up.' },
   { file: 'access.html', script: 'access', name: 'Who sees what', icon: 'access', group: 'Across the boards',
     title: 'Who sees what', note: 'What each role can open on each board today.',
-    description: 'What each role can open on each board.' }
+    description: 'What each role can open on each board.' },
+  { file: 'whats-next.html', script: 'next', name: "What's next", icon: 'next', group: 'Across the boards',
+    title: "What's next", note: 'What these boards cannot do yet, what each one would answer, and what is in the way.',
+    description: 'What the HSG boards cannot do yet, and what is in the way.' }
+];
+
+// Pages that do not exist yet. They sit in the menu with a Soon tag and open the page
+// that explains them, so nothing in the menu is a control that does nothing.
+const SOON = [
+  { name: 'Analytics', icon: 'analytics', href: 'whats-next.html#analytics' },
+  { name: 'Alerts', icon: 'alerts', href: 'whats-next.html#alerts' }
 ];
 
 function menu(current) {
@@ -49,6 +62,16 @@ function menu(current) {
     lines.push(`          <span>${page.name}</span>`);
     lines.push('        </a>');
   });
+
+  lines.push('        <p class="menu-label">Coming next</p>');
+  SOON.forEach((page) => {
+    lines.push(`        <a class="menu-item is-soon" href="${page.href}">`);
+    lines.push(`          ${svg(ICONS[page.icon])}`);
+    lines.push(`          <span>${page.name}</span>`);
+    lines.push('          <span class="tag">Soon</span>');
+    lines.push('        </a>');
+  });
+
   return lines.join('\n');
 }
 
@@ -151,6 +174,20 @@ const BODIES = {
           <div class="table-wrap">
             <table class="results" id="what-table"></table>
           </div>
+        </section>`,
+
+  next: `        <p class="notice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+          <span>Nothing on this page is built. It is here so the order is agreed and the cost is visible before anyone starts, and so nobody asks a board a question it was never going to answer.</span>
+        </p>
+
+        <div class="stack" id="next-list"></div>
+
+        <section class="panel" aria-labelledby="later-title">
+          <div class="panel-head">
+            <h2 id="later-title">Also on the list</h2>
+          </div>
+          <ul class="decision-list" id="later-list"></ul>
         </section>`,
 
   connections: `        <p class="notice">

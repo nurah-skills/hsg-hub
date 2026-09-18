@@ -1523,3 +1523,27 @@ tbody tr:has(.cell-pick input:checked) { background: var(--accent-soft); }
   .auth-colleges ul { gap: 8px; }
   .auth-colleges img { height: 26px; }
 }
+
+/* A menu entry for something that is not built: it opens the page that explains it */
+.menu-item.is-soon { color: var(--muted); }
+.menu-item.is-soon .tag { margin-left: auto; padding: 0 8px; font-size: 12px; background: transparent; border-color: var(--line); color: var(--muted); }
+.menu-item.is-soon svg:first-child { opacity: .7; }
+
+/* What is not built, in the order it would have to be done */
+.next-item { scroll-margin-top: 20px; }
+.next-heading { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+.next-step {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-family: var(--heading);
+  font-size: 15px;
+  font-weight: 600;
+}
+.next-heading h2 { font-size: 19px; }
+.next-item dd p { margin: 0; }
