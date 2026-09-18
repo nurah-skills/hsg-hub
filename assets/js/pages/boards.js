@@ -23,7 +23,8 @@ function showStartHere() {
   const unread = [...answers.values()].filter((entry) => !entry.summary).length;
 
   holder.append(create('b', 'start-lead', 'Where to start'));
-  waiting.forEach(({ board, summary }) => {
+  // In board order, not the order they answered in, so the row does not shuffle between visits
+  BOARDS.map((board) => answers.get(board.key)).filter((entry) => entry && entry.summary).forEach(({ board, summary }) => {
     const count = summary.needs.reduce((sum, need) => sum + need.count, 0);
     const link = create('a', `start-item ${count ? 'is-stop' : ''}`);
     link.href = boardLink(board, summary.home);
