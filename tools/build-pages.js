@@ -38,14 +38,13 @@ const PAGES = [
     description: 'What each role can open on each board.' },
   { file: 'whats-next.html', script: 'next', name: "What's next", icon: 'next', group: 'Across the boards',
     title: "What's next", note: 'What these boards cannot do yet, what each one would answer, and what is in the way.',
-    description: 'What the HSG boards cannot do yet, and what is in the way.' }
-];
-
-// Pages that do not exist yet. They sit in the menu with a Soon tag and open the page
-// that explains them, so nothing in the menu is a control that does nothing.
-const SOON = [
-  { name: 'Analytics', icon: 'analytics', href: 'whats-next.html#analytics' },
-  { name: 'Alerts', icon: 'alerts', href: 'whats-next.html#alerts' }
+    description: 'What the HSG boards cannot do yet, and what is in the way.' },
+  { file: 'analytics.html', script: 'analytics', name: 'Analytics', icon: 'analytics', group: 'Coming next', soon: true,
+    title: 'Analytics', note: 'A preview. What asking a question across the three boards would look like.',
+    description: 'A preview of asking a question across the three HSG boards.' },
+  { file: 'alerts.html', script: 'alerts', name: 'Alerts', icon: 'alerts', group: 'Coming next', soon: true,
+    title: 'Alerts', note: 'A preview. Who would be told what, and what the message would say.',
+    description: 'A preview of the Monday morning message from the HSG boards.' }
 ];
 
 function menu(current) {
@@ -57,23 +56,21 @@ function menu(current) {
       if (group) lines.push(`        <p class="menu-label">${group}</p>`);
     }
     const here = page.file === current ? ' aria-current="page"' : '';
-    lines.push(`        <a class="menu-item" href="${page.file}"${here}>`);
+    lines.push(`        <a class="menu-item${page.soon ? ' is-soon' : ''}" href="${page.file}"${here}>`);
     lines.push(`          ${svg(ICONS[page.icon])}`);
     lines.push(`          <span>${page.name}</span>`);
-    lines.push('        </a>');
-  });
-
-  lines.push('        <p class="menu-label">Coming next</p>');
-  SOON.forEach((page) => {
-    lines.push(`        <a class="menu-item is-soon" href="${page.href}">`);
-    lines.push(`          ${svg(ICONS[page.icon])}`);
-    lines.push(`          <span>${page.name}</span>`);
-    lines.push('          <span class="tag">Soon</span>');
+    if (page.soon) lines.push('          <span class="tag">Soon</span>');
     lines.push('        </a>');
   });
 
   return lines.join('\n');
 }
+
+// The banner every preview page wears, so nobody mistakes one for a working page
+const preview = (what) => `        <p class="preview-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z"/><path d="M12 7.5V12l3.2 2"/></svg>
+          <span><b>This page is not built.</b> ${what} <a href="whats-next.html">What would have to happen first</a></span>
+        </p>`;
 
 const shell = (page, body) => `<!doctype html>
 <html lang="en" data-page="app">
@@ -140,6 +137,7 @@ ${body}
 
   <script src="../assets/js/shared/data.js"></script>
   <script src="../assets/js/shared/app.js"></script>
+  <script src="../assets/js/shared/charts.js"></script>
   <script src="../assets/js/shared/boards.js"></script>
   <script src="../assets/js/pages/${page.script}.js"></script>
 </body>
@@ -174,6 +172,63 @@ const BODIES = {
           <div class="table-wrap">
             <table class="results" id="what-table"></table>
           </div>
+        </section>`,
+
+  analytics: `${preview('It is a picture of what this page would do, on made-up weekly figures. The boards do not keep their readings yet, so there is no history to draw.')}
+
+        <div class="controls">
+          <div class="segmented" id="measure-picker" role="group" aria-label="Measure"></div>
+          <label class="sr-only" for="college-filter">College</label>
+          <select class="select" id="college-filter"></select>
+        </div>
+
+        <div class="grid">
+          <section class="panel span-8" aria-labelledby="chart-title">
+            <div class="panel-head">
+              <h2 id="chart-title"></h2>
+              <span id="chart-move"></span>
+            </div>
+            <div id="measure-chart"></div>
+            <p class="panel-note" id="chart-note"></p>
+          </section>
+
+          <section class="panel span-4" aria-labelledby="college-title">
+            <div class="panel-head">
+              <h2 id="college-title">Where it sits now</h2>
+            </div>
+            <div id="college-chart"></div>
+            <p class="panel-note">The latest week, by college, with where it was nine weeks before.</p>
+          </section>
+
+          <section class="panel span-12" aria-labelledby="weeks-title">
+            <div class="panel-head">
+              <h2 id="weeks-title">The last five weeks</h2>
+            </div>
+            <div class="table-wrap">
+              <table class="results" id="weeks-table"></table>
+            </div>
+            <p class="panel-note">Five measures from three boards on one page. Today that means opening three boards and holding the answer in your head.</p>
+          </section>
+        </div>`,
+
+  alerts: `${preview('Nothing is sent and nothing is saved. The message below, though, is written from what the boards answer right now, so its shape is real.')}
+
+        <section class="panel" aria-labelledby="who-title">
+          <div class="panel-head">
+            <h2 id="who-title">Who would be told what</h2>
+          </div>
+          <div class="table-wrap">
+            <table class="results" id="who-table"></table>
+          </div>
+          <p class="panel-note">One address list, set here rather than agreed in conversation. A person who leaves is removed once, not three times.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="email-title">
+          <div class="panel-head">
+            <h2 id="email-title">What Monday's message would say</h2>
+          </div>
+          <div class="email-preview" id="email-body"></div>
+          <p class="panel-note">Built from what the three boards answer right now. It says what is waiting and nothing else — no charts, no scores, nothing that needs a reply.</p>
         </section>`,
 
   next: `        <p class="notice">

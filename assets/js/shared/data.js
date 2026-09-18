@@ -2,6 +2,11 @@
 // summary page in that board's repo, so a number here can never disagree with the board it came from.
 // What lives here is only the things that are about the boards rather than in them.
 
+// The three colleges, named the same way every board names them
+const COLLEGES = ['SA', 'MC', 'BV'];
+const COLLEGE_NAMES = { SA: 'Skills Academy', MC: 'Matric College', BV: 'Bellview' };
+const COLLEGE_COLOURS = { SA: 'var(--college-sa)', MC: 'var(--college-mc)', BV: 'var(--college-bv)' };
+
 const SNAPSHOT = {
   today: '18 September 2026',
   todayShort: '18 Sep'
@@ -96,6 +101,65 @@ const RULES = [
 ];
 
 
+
+// ---------------------------------------------------------------------------
+// Everything below this line belongs to a preview: a page that shows what a
+// feature would look like before it is built. None of it is read from a board.
+// The pages that use it say so at the top, every time.
+// ---------------------------------------------------------------------------
+
+// Eight weeks of made-up readings. The real thing would be the boards' own summaries,
+// stored once a day; this is here to show the shape a stored reading gives you.
+const PREVIEW_WEEKS = ['21 Jul', '28 Jul', '4 Aug', '11 Aug', '18 Aug', '25 Aug', '1 Sep', '8 Sep', '15 Sep'];
+
+const PREVIEW_MEASURES = [
+  {
+    key: 'waiting',
+    label: 'Leads waiting for evidence',
+    board: 'leads',
+    note: 'Lead records with nothing written against them, counted at the end of each week.',
+    series: { SA: [402, 418, 441, 470, 503, 538, 566, 601, 624], MC: [188, 201, 214, 236, 249, 268, 281, 297, 311], BV: [96, 103, 99, 112, 118, 121, 127, 130, 135] }
+  },
+  {
+    key: 'recorded',
+    label: 'Leads with something recorded',
+    board: 'leads',
+    unit: 'percent',
+    note: 'The share of lead records carrying a status, a note or a worked marker.',
+    series: { SA: [0.24, 0.23, 0.22, 0.22, 0.21, 0.2, 0.2, 0.19, 0.19], MC: [0.28, 0.27, 0.27, 0.26, 0.25, 0.25, 0.24, 0.23, 0.22], BV: [0.31, 0.3, 0.32, 0.3, 0.29, 0.29, 0.28, 0.28, 0.27] }
+  },
+  {
+    key: 'sent',
+    label: 'Emails sent',
+    board: 'mailer',
+    note: 'What the mail tool reports as sent in the week.',
+    series: { SA: [186000, 174000, 198000, 205000, 191000, 216000, 224000, 238000, 246000], MC: [98000, 104000, 96000, 112000, 108000, 119000, 124000, 131000, 129000], BV: [64000, 71000, 68000, 74000, 79000, 81000, 86000, 88000, 92000] }
+  },
+  {
+    key: 'checks',
+    label: 'Rows needing a check',
+    board: 'mailer',
+    note: 'Tracker rows where the record contradicts itself or is missing something.',
+    series: { SA: [18, 17, 19, 16, 15, 14, 14, 13, 12], MC: [11, 12, 10, 11, 9, 9, 8, 8, 7], BV: [9, 8, 8, 7, 7, 8, 7, 7, 7] }
+  },
+  {
+    key: 'registrations',
+    label: 'Registrations',
+    board: 'scoreboard',
+    note: 'Non-cancelled registrations recorded in the week.',
+    series: { SA: [181, 176, 194, 188, 203, 197, 211, 206, 191], MC: [96, 102, 94, 108, 101, 112, 106, 118, 97], BV: [88, 91, 96, 89, 94, 103, 99, 107, 128] }
+  }
+];
+
+const PREVIEW_EVERY = 'Every morning at 06:40, after the boards are read';
+
+const PREVIEW_ALERTS = [
+  { who: 'Jan Badenhorst', when: 'Monday', what: 'Everything waiting, all three boards', how: 'Email' },
+  { who: 'Marketing manager', when: 'Monday', what: 'The mailer board only', how: 'Email' },
+  { who: 'Sales managers', when: 'Monday and Thursday', what: 'The scoreboard and the lead tracker', how: 'Email' },
+  { who: 'Nobody yet', when: 'When a board stops answering', what: 'A note that a reading did not happen', how: 'Not set' }
+];
+
 // What is not built. Each one says what it would answer and what has to happen first,
 // because a list of wishes is worth nothing next to a list of what is in the way.
 // They are in the order they would have to be done: each one leans on the ones above it.
@@ -104,6 +168,7 @@ const NEXT = [
     id: 'readings',
     title: 'Keep the readings, so a figure has a direction',
     page: null,
+    mock: 'readings',
     answers: 'Is it getting better or worse? Every board holds one reading and forgets the last one, so “1 050 leads waiting” reads the same whether it was 600 last week or 1 400.',
     needs: 'Somewhere to keep one reading a day. Each board already builds its own summary; a stored, dated copy of that is enough to draw a line.',
     where: 'A small run behind each figure on the boards, and the thing everything below is built on.',
@@ -113,6 +178,7 @@ const NEXT = [
     id: 'analytics',
     title: 'Ask a question across the three boards',
     page: 'Analytics',
+    preview: 'analytics.html',
     answers: 'How did Matric College do last month, across mail, leads and registrations at once? Today that means opening three boards, reading three periods and holding the answer in your head.',
     needs: 'The kept readings above, and each board reporting its figures split by college and by week rather than as one number. Then a page where a period, a college and a measure are chosen and drawn.',
     where: 'An **Analytics** page here, with the boards left as they are.',
@@ -122,6 +188,7 @@ const NEXT = [
     id: 'alerts',
     title: 'A Monday morning email',
     page: 'Alerts',
+    preview: 'alerts.html',
     answers: 'What needs me this week, without having to remember to look.',
     needs: 'Something that can send mail on a schedule, and one address list. It sends what the home page already works out, so nothing new has to be counted.',
     where: 'An **Alerts** page here, to say who gets it and on which morning.',
@@ -131,6 +198,7 @@ const NEXT = [
     id: 'assign',
     title: 'Name an owner from the board',
     page: null,
+    mock: 'assign',
     answers: 'Who is doing something about it. Today a board can say three forms have nobody against them, and the fixing happens somewhere else entirely.',
     needs: 'Write access to the source sheets, real sign-in so a change is attributed, and a decision about who may assign to whom. It would be the first time any board writes rather than only reads, so it needs care.',
     where: 'On the lead tracker beside a form with no owner, and on the mailer board beside a decision.',
@@ -140,6 +208,7 @@ const NEXT = [
     id: 'join',
     title: 'Join a registration to the lead and the campaign that started it',
     page: null,
+    mock: 'join',
     answers: 'Did it work. This is the question none of the three boards will answer, and the reason they will not is that nothing connects a registration back to the submission or the mail that came before it.',
     needs: 'One identifier a person carries from the form, through the mail, to the registration. Until that exists on the sheets, no amount of work on these boards can produce it.',
     where: 'Everywhere. It is the difference between counting activity and knowing what the activity did.',
@@ -156,3 +225,4 @@ const LATER = [
 ];
 
 const formatNumber = (value) => Math.round(value).toLocaleString('en-ZA').replace(/,/g, ' ');
+const formatPercent = (value, places = 1) => `${(value * 100).toFixed(places)}%`;

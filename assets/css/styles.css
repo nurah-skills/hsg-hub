@@ -1547,3 +1547,53 @@ tbody tr:has(.cell-pick input:checked) { background: var(--accent-soft); }
 }
 .next-heading h2 { font-size: 19px; }
 .next-item dd p { margin: 0; }
+
+/* A page that is a picture of something not built yet says so, every time, at the top */
+.preview-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-control);
+  background: var(--info-soft);
+  color: var(--info-ink);
+  line-height: 1.5;
+}
+.preview-banner svg { flex: none; margin-top: 2px; }
+.preview-banner a { color: inherit; }
+
+/* The message a person would be sent, drawn as a message rather than as a panel */
+.email-preview {
+  padding: 22px 24px;
+  border-radius: var(--radius-control);
+  background: var(--field);
+}
+.email-preview .email-greeting { font-family: var(--heading); font-size: 18px; font-weight: 600; }
+.email-preview p + h3 { margin-top: 18px; }
+.email-preview h3 { font-family: var(--heading); font-size: 15px; font-weight: 600; margin: 16px 0 6px; }
+.email-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.email-list b { font-variant-numeric: tabular-nums; }
+.email-foot { margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+/* A small picture of something not built, inside the item that describes it */
+.mock-label { margin-top: 4px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.mock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px;
+  border-radius: var(--radius-control);
+  border: 1px dashed var(--field-line);
+  background: var(--field);
+}
+.mock > small { color: var(--muted); font-size: 13px; line-height: 1.5; }
+.mock-figure { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.mock-figure span { display: block; font-size: 14px; font-weight: 700; color: var(--muted); }
+.mock-figure b { display: block; font-family: var(--heading); font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.mock-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.mock-row b { display: block; font-size: 15px; }
+.mock-row small { display: block; font-size: 13px; color: var(--muted); }
+.mock-control { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.mock-control .select { min-width: 180px; }
+.mock-join dt { color: var(--muted); }
+.mock-link { align-self: flex-start; }
