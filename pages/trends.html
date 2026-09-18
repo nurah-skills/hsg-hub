@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#0A130F" media="(prefers-color-scheme: dark)">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="robots" content="noindex">
-  <meta name="description" content="Everything across the three HSG boards that needs attention.">
-  <title>Waiting on you · HSG boards</title>
+  <meta name="description" content="A preview of what the HSG boards would show once their readings are kept.">
+  <title>Trends · HSG boards</title>
   <link rel="icon" href="../assets/img/logo.svg?v=e94586dc" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
       <a class="brand" href="home.html"><img src="../assets/img/logo.svg?v=e94586dc" width="36" height="36" alt=""><span class="brand-text"><b>HSG boards</b><small>One way in</small></span></a>
 
       <nav class="menu" aria-label="Pages">
-        <a class="menu-item" href="home.html" aria-current="page">
+        <a class="menu-item" href="home.html">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5"/><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/></svg>
           <span>Home</span>
         </a>
@@ -46,7 +46,7 @@
           <span>What's next</span>
         </a>
         <p class="menu-label">Coming next</p>
-        <a class="menu-item is-soon" href="trends.html">
+        <a class="menu-item is-soon" href="trends.html" aria-current="page">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 15.5 9 10l3.5 3.5L20.5 5"/><path d="M15.5 5h5v5"/></svg>
           <span>Trends</span>
           <span class="tag">Soon</span>
@@ -95,28 +95,26 @@
       <main class="app-main" id="main" tabindex="-1">
         <div class="page-header">
           <div>
-            <h1>Waiting on you</h1>
-            <p class="page-note">Everything the three boards say needs you, in one list.</p>
+            <h1>Trends</h1>
+            <p class="page-note">A preview. What a figure looks like once the boards keep their readings.</p>
           </div>
         </div>
 
-        <div class="controls">
-          <div class="segmented" id="group-picker" role="group" aria-label="Group by"></div>
-          <button class="button button-secondary button-inline" id="home-export" type="button"></button>
-        </div>
+        <p class="preview-banner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z"/><path d="M12 7.5V12l3.2 2"/></svg>
+          <span><b>This page is not built.</b> The runs below are made up. No board keeps its readings yet, which is exactly the thing this would change. <a href="whats-next.html">What would have to happen first</a></span>
+        </p>
 
-        <p class="panel-note" id="readings"></p>
+        <div class="trend-cards" id="figures"></div>
 
-        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
-
-        <div class="stack" id="attention"></div>
-
-        <section class="panel" aria-labelledby="rules-title">
+        <section class="panel" aria-labelledby="ba-title">
           <div class="panel-head">
-            <h2 id="rules-title">True of all three boards</h2>
+            <h2 id="ba-title">The difference it makes</h2>
           </div>
-          <ul class="decision-list" id="rule-list"></ul>
+          <div class="before-after" id="before-after"></div>
         </section>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>
       </main>
     </div>
   </div>
@@ -128,6 +126,6 @@
   <script src="../assets/js/shared/charts.js?v=c7a8f4a5"></script>
   <script src="../assets/js/shared/boards.js?v=147e9674"></script>
   <script src="../assets/js/shared/preview.js?v=2be04593"></script>
-  <script src="../assets/js/pages/home.js?v=7922df4b"></script>
+  <script src="../assets/js/pages/trends.js?v=6abbe8e3"></script>
 </body>
 </html>

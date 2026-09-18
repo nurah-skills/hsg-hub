@@ -117,3 +117,4 @@ college.addEventListener('change', (event) => {
 });
 
 render();
+showQuestions('analytics');

@@ -16,6 +16,9 @@ const ICONS = {
   access: '<circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/>',
   next: '<path d="M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z"/><path d="M12 7.5V12l3.2 2"/>',
   analytics: '<path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/>',
+  trends: '<path d="M3.5 15.5 9 10l3.5 3.5L20.5 5"/><path d="M15.5 5h5v5"/>',
+  assign: '<circle cx="10" cy="8" r="3.4"/><path d="M3.5 20a6.5 6.5 0 0 1 13 0"/><path d="M18 7.5v5M15.5 10h5"/>',
+  join: '<path d="M9.5 14.5 14.5 9.5"/><path d="M13 7.5 15 5.5a3.5 3.5 0 0 1 5 5l-2 2"/><path d="M11 16.5 9 18.5a3.5 3.5 0 0 1-5-5l2-2"/>',
   alerts: '<path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/><path d="M10.5 20a2 2 0 0 0 3 0"/>'
 };
 
@@ -39,12 +42,21 @@ const PAGES = [
   { file: 'whats-next.html', script: 'next', name: "What's next", icon: 'next', group: 'Across the boards',
     title: "What's next", note: 'What these boards cannot do yet, what each one would answer, and what is in the way.',
     description: 'What the HSG boards cannot do yet, and what is in the way.' },
+  { file: 'trends.html', script: 'trends', name: 'Trends', icon: 'trends', group: 'Coming next', soon: true,
+    title: 'Trends', note: 'A preview. What a figure looks like once the boards keep their readings.',
+    description: 'A preview of what the HSG boards would show once their readings are kept.' },
   { file: 'analytics.html', script: 'analytics', name: 'Analytics', icon: 'analytics', group: 'Coming next', soon: true,
     title: 'Analytics', note: 'A preview. What asking a question across the three boards would look like.',
     description: 'A preview of asking a question across the three HSG boards.' },
   { file: 'alerts.html', script: 'alerts', name: 'Alerts', icon: 'alerts', group: 'Coming next', soon: true,
     title: 'Alerts', note: 'A preview. Who would be told what, and what the message would say.',
-    description: 'A preview of the Monday morning message from the HSG boards.' }
+    description: 'A preview of the Monday morning message from the HSG boards.' },
+  { file: 'assign.html', script: 'assign', name: 'Name an owner', icon: 'assign', group: 'Coming next', soon: true,
+    title: 'Name an owner', note: 'A preview. Settling who is doing something about it, from the board itself.',
+    description: 'A preview of naming an owner from an HSG board.' },
+  { file: 'join.html', script: 'join', name: 'Join the records', icon: 'join', group: 'Coming next', soon: true,
+    title: 'Join the records', note: 'A preview. One person, four records, and the identifier that would tie them together.',
+    description: 'A preview of joining a registration to the lead and the campaign that started it.' }
 ];
 
 function menu(current) {
@@ -139,6 +151,7 @@ ${body}
   <script src="../assets/js/shared/app.js"></script>
   <script src="../assets/js/shared/charts.js"></script>
   <script src="../assets/js/shared/boards.js"></script>
+  <script src="../assets/js/shared/preview.js"></script>
   <script src="../assets/js/pages/${page.script}.js"></script>
 </body>
 </html>
@@ -209,7 +222,9 @@ const BODIES = {
             </div>
             <p class="panel-note">Five measures from three boards on one page. Today that means opening three boards and holding the answer in your head.</p>
           </section>
-        </div>`,
+        </div>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>`,
 
   alerts: `${preview('Nothing is sent and nothing is saved. The message below, though, is written from what the boards answer right now, so its shape is real.')}
 
@@ -229,7 +244,59 @@ const BODIES = {
           </div>
           <div class="email-preview" id="email-body"></div>
           <p class="panel-note">Built from what the three boards answer right now. It says what is waiting and nothing else — no charts, no scores, nothing that needs a reply.</p>
-        </section>`,
+        </section>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>`,
+
+  trends: `${preview('The runs below are made up. No board keeps its readings yet, which is exactly the thing this would change.')}
+
+        <div class="trend-cards" id="figures"></div>
+
+        <section class="panel" aria-labelledby="ba-title">
+          <div class="panel-head">
+            <h2 id="ba-title">The difference it makes</h2>
+          </div>
+          <div class="before-after" id="before-after"></div>
+        </section>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>`,
+
+  assign: `${preview('The controls below are drawn and switched off. These boards read their sheets and write nothing back, so there is nothing behind them yet.')}
+
+        <section class="panel" aria-labelledby="assign-title">
+          <div class="panel-head">
+            <h2 id="assign-title">Things with nobody against them</h2>
+          </div>
+          <div class="mock" id="assign-rows"></div>
+          <p class="panel-note">Four real examples, taken from what the boards say is waiting. Today each of these is settled somewhere else — a message, a meeting, a note that gets lost.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="after-title">
+          <div class="panel-head">
+            <h2 id="after-title">What would happen when you pressed it</h2>
+          </div>
+          <dl class="figure-list" id="after-list"></dl>
+        </section>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>`,
+
+  join: `${preview('One invented person, to show what a joined record would look like. Nothing on the sheets ties these four records together today.')}
+
+        <section class="panel" aria-labelledby="chain-title">
+          <div class="panel-head">
+            <h2 id="chain-title">One person, four records, three boards</h2>
+          </div>
+          <ol class="chain" id="chain"></ol>
+        </section>
+
+        <section class="panel" aria-labelledby="gap-title">
+          <div class="panel-head">
+            <h2 id="gap-title">What is in the way</h2>
+          </div>
+          <dl class="figure-list" id="gap-list"></dl>
+        </section>
+
+        <section class="panel" id="questions" aria-label="What this would take"></section>`,
 
   next: `        <p class="notice">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>

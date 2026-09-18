@@ -34,8 +34,11 @@ This means two things worth knowing:
 | `pages/connections.html` | Every workbook the three boards read, which board reads it, and what to know about it. Then what is not joined up — a mail to a registration, a lead to a registration, a lead to a mail, and the missing shared account list. |
 | `pages/access.html` | What each role can open on each board today, and how signing in actually works. |
 | `pages/whats-next.html` | What these boards cannot do yet: five things in the order they would have to be done, each saying what it would answer, what has to happen first, where it would show up and how big it is, with a picture of what it would look like. Then a shorter list of what comes after. |
-| `pages/analytics.html` | **A preview.** What asking a question across the three boards would look like: pick a measure and a college, and see nine weeks of it. The figures are made up, because the boards do not keep their readings yet. |
-| `pages/alerts.html` | **A preview.** Who would be told what, on which morning, and what Monday's message would say. The message is written from what the three boards answer right now, so its shape is real. Nothing is sent and nothing is saved. |
+| `pages/trends.html` | **A preview.** Four figures with nine weeks behind them, and the same figure shown with and without its run, so the difference is the point. |
+| `pages/analytics.html` | **A preview.** Pick a measure and a college and see nine weeks of it, with five measures from three boards in one table. |
+| `pages/alerts.html` | **A preview.** Who would be told what, on which morning, and what Monday's message would say. The message is written from what the three boards answer right now, so its shape is real. |
+| `pages/assign.html` | **A preview.** Four things with nobody against them, each with the control that would settle it, drawn and switched off, and what would happen when you pressed it. |
+| `pages/join.html` | **A preview.** One person, four records, three boards, and the identifier that would tie them together. |
 | `index.html` | Sign in, or look around. |
 
 ## The summary file in each board
@@ -89,7 +92,7 @@ All four sites share one design, so a person who knows one can read the others. 
 
 The **What's next** page is the list, and it is the honest version: each item says what is in the way, not just what it would be nice to have, and carries a picture of what it would look like.
 
-Two of them are built far enough to click into — **Analytics** and **Alerts** — and sit in the menu under **Coming next** with a **Soon** tag. Both open with a banner saying the page is not built, what is invented and what is real. That line is the whole point of them: a preview earns its place by showing the shape of a thing, and loses it the moment somebody mistakes it for a working page.
+All five are built far enough to click into, and sit in the menu under **Coming next** with a **Soon** tag. Each opens with a banner saying the page is not built, what on it is invented and what is real, and each carries its own four questions at the bottom, so the page and the reasoning travel together. That banner is the whole point: a preview earns its place by showing the shape of a thing, and loses it the moment somebody mistakes it for a working page.
 
 ## Still to do
 

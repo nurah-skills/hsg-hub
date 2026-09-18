@@ -90,3 +90,4 @@ askBoards((board, summary, problem) => {
   answers.set(board.key, { board, summary, problem });
   showEmail();
 });
+showQuestions('alerts');

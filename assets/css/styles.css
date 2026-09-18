@@ -1597,3 +1597,39 @@ tbody tr:has(.cell-pick input:checked) { background: var(--accent-soft); }
 .mock-control .select { min-width: 180px; }
 .mock-join dt { color: var(--muted); }
 .mock-link { align-self: flex-start; }
+
+/* A figure with its run behind it */
+.trend-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+.trend-card { display: flex; flex-direction: column; gap: 12px; padding: 18px; border-radius: var(--radius); background: var(--card); box-shadow: var(--shell); }
+.trend-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.trend-top span { display: block; font-size: 14px; font-weight: 700; color: var(--muted); }
+.trend-top small { display: block; font-size: 13px; color: var(--muted); }
+.trend-figure { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; }
+.trend-figure b { font-family: var(--heading); font-size: 30px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+.before-after { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+/* One person's records, in the order they happened */
+.chain { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+.chain-step { display: flex; align-items: flex-start; gap: 16px; padding: 16px 0; }
+.chain-step + .chain-step { border-top: 1px solid var(--line); }
+.chain-mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-family: var(--heading);
+  font-size: 15px;
+  font-weight: 600;
+}
+.chain-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.chain-body small { color: var(--muted); font-size: 13px; }
+
+#questions .next-heading h2 { font-size: 19px; }
+
+@media (max-width: 560px) {
+  .trend-cards, .before-after { grid-template-columns: minmax(0, 1fr); }
+}

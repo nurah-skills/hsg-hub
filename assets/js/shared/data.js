@@ -167,11 +167,11 @@ const NEXT = [
   {
     id: 'readings',
     title: 'Keep the readings, so a figure has a direction',
-    page: null,
-    mock: 'readings',
+    page: 'Trends',
+    preview: 'trends.html',
     answers: 'Is it getting better or worse? Every board holds one reading and forgets the last one, so “1 050 leads waiting” reads the same whether it was 600 last week or 1 400.',
     needs: 'Somewhere to keep one reading a day. Each board already builds its own summary; a stored, dated copy of that is enough to draw a line.',
-    where: 'A small run behind each figure on the boards, and the thing everything below is built on.',
+    where: 'A **Trends** page here, a small run behind each figure on the boards, and the thing everything below is built on.',
     size: 'Small, once there is somewhere to write.'
   },
   {
@@ -197,21 +197,21 @@ const NEXT = [
   {
     id: 'assign',
     title: 'Name an owner from the board',
-    page: null,
-    mock: 'assign',
+    page: 'Name an owner',
+    preview: 'assign.html',
     answers: 'Who is doing something about it. Today a board can say three forms have nobody against them, and the fixing happens somewhere else entirely.',
     needs: 'Write access to the source sheets, real sign-in so a change is attributed, and a decision about who may assign to whom. It would be the first time any board writes rather than only reads, so it needs care.',
-    where: 'On the lead tracker beside a form with no owner, and on the mailer board beside a decision.',
+    where: 'A **Name an owner** page here to settle a batch of them, and the same control on the lead tracker beside a form with no owner.',
     size: 'Medium, and it changes what these boards are.'
   },
   {
     id: 'join',
     title: 'Join a registration to the lead and the campaign that started it',
-    page: null,
-    mock: 'join',
+    page: 'Join the records',
+    preview: 'join.html',
     answers: 'Did it work. This is the question none of the three boards will answer, and the reason they will not is that nothing connects a registration back to the submission or the mail that came before it.',
     needs: 'One identifier a person carries from the form, through the mail, to the registration. Until that exists on the sheets, no amount of work on these boards can produce it.',
-    where: 'Everywhere. It is the difference between counting activity and knowing what the activity did.',
+    where: 'Everywhere, and a **Join the records** page here to show one person end to end. It is the difference between counting activity and knowing what the activity did.',
     size: 'Large, and it starts with the sheets rather than with a board.'
   }
 ];
