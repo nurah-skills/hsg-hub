@@ -43,7 +43,7 @@ const BOARDS = [
     name: 'Lead tracker',
     what: 'Where the survey leads went, how long they waited, and what was recorded.',
     base: `${SITE_ROOT}hsg-lead-tracker/`,
-    who: 'Sales managers and salespeople',
+    who: 'Sales managers, marketing managers and salespeople',
     holds: 'Survey and Tally leads, follow-up notes, the form register, form repairs.',
     reads: ['Salespeople master', 'Form inventory', 'Repair tracker']
   }
@@ -71,9 +71,10 @@ const CONNECTION_STATES = {
 
 // Who can open what. This is what the boards do today, not a policy anyone has signed off.
 const ACCESS = [
+  // Marketing are on the lead tracker because they build and own the forms the leads arrive on
   { role: 'Sales manager', scoreboard: 'Everything', mailer: 'No access', leads: 'Everything, and records decisions on repairs' },
-  { role: 'Salesperson', scoreboard: 'Their own results, and how the team is doing', mailer: 'No access', leads: 'The leads allocated to them' },
-  { role: 'Marketing manager', scoreboard: 'No access', mailer: 'Everything', leads: 'No access' }
+  { role: 'Marketing manager', scoreboard: 'No access', mailer: 'Everything', leads: 'Everything, and records decisions on form repairs' },
+  { role: 'Salesperson', scoreboard: 'Their own results, and how the team is doing', mailer: 'No access', leads: 'The leads allocated to them' }
 ];
 
 // What is true of all three, and worth saying once rather than three times
