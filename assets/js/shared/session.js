@@ -34,9 +34,19 @@ function endSession() {
   }
 }
 
+// There is one demo account, so a session kept from an earlier visit takes the current
+// details rather than showing a name the site no longer uses.
+function currentSession() {
+  const saved = readSession();
+  if (!saved) return null;
+  if (saved.name === DEMO_USER.name && saved.role === DEMO_USER.role) return saved;
+  startSession(DEMO_USER);
+  return DEMO_USER;
+}
+
 // Runs in the <head> so people never see a flash of the wrong page.
 const pageType = document.documentElement.dataset.page;
-const signedIn = readSession();
+const signedIn = currentSession();
 const SIGN_IN_PAGE = '../index.html';
 const HOME_PAGE = pageType === 'app' ? 'home.html' : 'pages/home.html';
 
