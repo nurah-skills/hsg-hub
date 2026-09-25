@@ -98,12 +98,36 @@ function showList() {
   const items = everything();
   const answered = [...answers.values()].length;
 
-  if (!items.length) {
-    holder.append(create('p', 'empty', answered === BOARDS.length
-      ? 'Nothing on any board is waiting on anyone. Worth checking the boards answered — each card on The boards says when it was read.'
-      : 'Reading the boards…'));
+  // Still waiting to hear from the boards is not the same as hearing that nothing
+  // is waiting, so the banner only speaks once every board has answered.
+  if (!items.length && answered < BOARDS.length) {
+    holder.append(create('p', 'empty', 'Reading the boards…'));
     return;
   }
+
+  // The one banner: what needs a decision across every board, then what is only
+  // waiting. Both totals come from the list below it, so they cannot disagree.
+  const decisions = items.filter((item) => item.tone === 'stop').reduce((sum, item) => sum + item.count, 0);
+  const waiting = items.filter((item) => item.tone !== 'stop').reduce((sum, item) => sum + item.count, 0);
+  const boards = new Set(items.map((item) => item.board.key)).size;
+
+  holder.append(buildBanner([
+    {
+      count: decisions,
+      one: 'thing needs a decision across the boards.',
+      many: 'things need a decision across the boards.',
+      href: 'boards.html',
+      tone: 'is-stop'
+    },
+    { count: waiting, one: 'is only waiting on someone', many: 'are only waiting on someone', tone: 'is-hold' },
+    { count: boards, one: 'board is reporting', many: 'boards are reporting', tone: '' }
+  ], {
+    action: 'See the boards',
+    calmTitle: 'Nothing on any board is waiting on anyone.',
+    calmNote: 'Worth checking which boards answered — each card on The boards says when it was read.'
+  }));
+
+  if (!items.length) return;
 
   if (state.grouping === 'board') {
     BOARDS.forEach((board) => {
