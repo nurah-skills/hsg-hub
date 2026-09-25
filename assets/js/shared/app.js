@@ -319,12 +319,13 @@ function exportButton(label, build) {
 }
 
 let tileCount = 0;
-function statTile({ label, value, note, icon: paths, tone = '', change, spark, sparkLabel, sparkMark = 'newest', about }) {
+function statTile({ label, value, note, change, spark, sparkLabel, sparkMark = 'newest', about }) {
   const tile = create('div', 'tile');
   const badge = create('div', 'tile-badge');
   const name = create('span', '', label);
   badge.append(name);
 
+  let explain = null;
   if (about) {
     tileCount += 1;
     const id = `tile-about-${tileCount}`;
@@ -336,7 +337,7 @@ function statTile({ label, value, note, icon: paths, tone = '', change, spark, s
     ask.append(icon(ICONS.about, 15));
     name.append(ask);
 
-    const explain = create('p', 'tile-about', about);
+    explain = create('p', 'tile-about', about);
     explain.id = id;
     explain.hidden = true;
     ask.addEventListener('click', () => {
@@ -344,26 +345,6 @@ function statTile({ label, value, note, icon: paths, tone = '', change, spark, s
       ask.setAttribute('aria-expanded', String(!explain.hidden));
     });
     tile.dataset.hasAbout = 'true';
-    tile.append(badge);
-    if (paths) {
-      const mark = create('span', ('tile-icon ' + tone).trim());
-      mark.append(icon(paths, 18));
-      badge.append(mark);
-    }
-    const figure = create('div', 'tile-figure');
-    figure.append(create('b', '', value));
-    if (spark) figure.append(sparkline(spark, sparkLabel || label, sparkMark));
-    const foot = create('div', 'tile-foot');
-    if (change) foot.append(statusChip(change));
-    if (note) foot.append(create('small', '', note));
-    tile.append(figure, foot, explain);
-    return tile;
-  }
-
-  if (paths) {
-    const mark = create('span', ('tile-icon ' + tone).trim());
-    mark.append(icon(paths, 18));
-    badge.append(mark);
   }
 
   const figure = create('div', 'tile-figure');
@@ -375,6 +356,7 @@ function statTile({ label, value, note, icon: paths, tone = '', change, spark, s
   if (note) foot.append(create('small', '', note));
 
   tile.append(badge, figure, foot);
+  if (explain) tile.append(explain);
   return tile;
 }
 
