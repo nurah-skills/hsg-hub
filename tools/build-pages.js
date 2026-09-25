@@ -148,6 +148,7 @@ ${body}
 
   <script src="../assets/js/shared/data.js"></script>
   <script src="../assets/js/shared/app.js"></script>
+  <script src="../assets/js/shared/views.js"></script>
   <script src="../assets/js/shared/charts.js"></script>
   <script src="../assets/js/shared/boards.js"></script>
   <script src="../assets/js/shared/preview.js"></script>
@@ -160,7 +161,8 @@ const BODIES = {
   home: `        <div class="controls">
           <div class="segmented" id="group-picker" role="group" aria-label="Group by"></div>
           <button class="button button-secondary button-inline" id="home-export" type="button"></button>
-        </div>
+        
+          <div class="views" id="saved-views"></div></div>
 
         <p class="panel-note" id="readings"></p>
 
@@ -192,7 +194,8 @@ const BODIES = {
           <div class="segmented" id="measure-picker" role="group" aria-label="Measure"></div>
           <label class="sr-only" for="college-filter">College</label>
           <select class="select" id="college-filter"></select>
-        </div>
+        
+          <div class="views" id="saved-views"></div></div>
 
         <div class="grid">
           <section class="panel span-8" aria-labelledby="chart-title">
