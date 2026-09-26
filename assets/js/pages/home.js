@@ -30,6 +30,10 @@ function everything() {
   return items;
 }
 
+function redrawTiles() {
+  showTiles();
+}
+
 function showTiles() {
   const items = everything();
   const answered = [...answers.values()].filter((entry) => entry.summary).length;
@@ -40,18 +44,21 @@ function showTiles() {
     {
       label: 'Waiting on you', icon: ICONS.alert, tone: 'is-warn',
       value: formatNumber(stop + hold),
+      watch: { value: stop + hold, unit: 'things', better: 'below' },
       note: answered === BOARDS.length ? 'across all three boards' : `across ${answered} of the three boards`,
       about: 'Added up from what each board says is waiting. It counts things to look at, not hours of work, and a board that did not answer is left out rather than guessed at.'
     },
     {
       label: 'Needs a decision', icon: ICONS.rows, tone: '',
       value: formatNumber(stop),
+      watch: { value: stop, unit: 'decisions', better: 'below' },
       note: 'nothing moves until these are settled',
       about: 'Blocked decisions, open problems and leads nobody has recorded anything against for over a week.'
     },
     {
       label: 'Waiting on someone', icon: ICONS.clock, tone: 'is-info',
       value: formatNumber(hold),
+      watch: { value: hold, unit: 'things', better: 'below' },
       note: 'moving, but not finished',
       about: 'Waiting on a person, a check or a reply. These do not need a decision from you today, but they stop being other people’s problem if nobody chases them.'
     },
