@@ -861,8 +861,6 @@ textarea.input { resize: vertical; min-height: 120px; line-height: 1.5; }
   * { transition: none !important; }
 }
 
-/* Home: two figures side by side */
-.tiles-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .decision-list,
 .gap-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .decision-list > li,
@@ -871,10 +869,6 @@ textarea.input { resize: vertical; min-height: 120px; line-height: 1.5; }
 .gap-list > li:first-child { border-top: 0; padding-top: 0; }
 .decision-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .decision-top h3 { margin: 0; font-family: var(--heading); font-size: 17px; font-weight: 600; }
-
-@media (max-width: 560px) {
-  .tiles-two { grid-template-columns: minmax(0, 1fr); }
-}
 
 .header-tools { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
 .board-state { display: flex; align-items: flex-start; gap: 10px; }
@@ -1115,6 +1109,7 @@ textarea.input { resize: vertical; min-height: 120px; line-height: 1.5; }
     transform: translate(-50%, -50%);
   }
 }
+.attention-heading { display: inline-flex; align-items: center; gap: 6px; }
 .tile-about { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; color: var(--muted); }
 
 /* Picking rows out of a table */
@@ -1471,6 +1466,52 @@ h1 { letter-spacing: -.02em; font-weight: 650; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 ::selection { background: var(--accent-soft); color: var(--ink); }
 
+/* ---------------------------------------------------------------------------
+   The one banner per page. It says what needs somebody, as a sentence with the
+   figure in it. When nothing is waiting it turns green rather than disappearing,
+   because "nothing is waiting" is itself worth reading.
+   --------------------------------------------------------------------------- */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 20px 24px;
+  border-radius: 14px;
+  background: linear-gradient(100deg, var(--navy) 0%, var(--navy-mid) 55%, var(--navy-end) 100%);
+  color: var(--on-navy);
+}
+.banner.is-calm { background: linear-gradient(100deg, var(--calm), var(--calm-lift)); }
+.banner-left { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.banner-figure {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+.banner h2 { margin: 0; font-size: 19px; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; }
+.banner p { margin: 4px 0 0; color: var(--on-navy-muted); font-size: 14px; line-height: 1.5; }
+.banner p b { color: var(--on-navy); font-weight: 600; }
+.banner-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: var(--radius-control);
+  background: var(--card);
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.banner-link:hover { background: var(--subtle); }
+.banner-link svg { width: 14px; height: 14px; }
+
 /* A figure card closes with its base on the left and what is late on the right. */
 .tile-foot {
   display: flex;
@@ -1483,6 +1524,12 @@ h1 { letter-spacing: -.02em; font-weight: 650; }
   color: var(--muted);
 }
 .tile-foot b { font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .banner { flex-direction: column; align-items: flex-start; }
+  .banner-figure { font-size: 34px; }
+  .banner-link { align-self: stretch; justify-content: center; }
+}
 
 /* ===========================================================================
    On paper
@@ -1527,11 +1574,17 @@ h1 { letter-spacing: -.02em; font-weight: 650; }
   /* A panel split across a page break is a panel nobody can read. */
   .panel,
   .tile,
+  .banner,
   table { break-inside: avoid; page-break-inside: avoid; }
   h1, h2, h3 { break-after: avoid; page-break-after: avoid; }
 
   /* Hairlines survive printing; soft shadows do not. */
-  .panel, .tile { border: 1px solid #C9CFD8; box-shadow: none; }
+  .panel, .tile, .banner { border: 1px solid #C9CFD8; box-shadow: none; }
+
+  /* The banner is white-on-navy on screen. On paper it is the other way round. */
+  .banner, .banner.is-calm { background: #FFFFFF; color: #000000; border: 2px solid #000000; }
+  .banner h2, .banner p, .banner p b, .banner-figure { color: #000000; }
+  .banner-link { display: none; }
 
   /* Every (i) is opened, so the caveats print with the figures they belong to. */
   .tile-about { display: block !important; }

@@ -176,8 +176,6 @@ const BODIES = {
 
         <p class="panel-note" id="readings"></p>
 
-        <section class="tiles tiles-two" id="home-tiles" aria-label="Totals"></section>
-
         <div class="stack" id="attention"></div>
 
         <section class="panel" aria-labelledby="rules-title">
