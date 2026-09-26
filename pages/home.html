@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@500&display=swap">
-  <link rel="stylesheet" href="../assets/css/styles.css?v=f4434d5e">
+  <link rel="stylesheet" href="../assets/css/styles.css?v=b43ec619">
   <script src="../assets/js/shared/session.js?v=b6984a1d"></script>
 </head>
 <body>
@@ -97,17 +97,20 @@
             <h1>Waiting on you</h1>
             <p class="page-note">Everything the three boards say needs you, in one list.</p>
           </div>
+          <button class="button button-secondary button-inline" id="home-export" type="button" data-header-action></button>
         </div>
 
         <div class="controls">
           <div class="segmented" id="group-picker" role="group" aria-label="Group by"></div>
-          <button class="button button-secondary button-inline" id="home-export" type="button"></button>
-        
-          <div class="views" id="saved-views"></div></div>
+          <button class="button button-secondary button-inline more-filters" id="more-filters" type="button" aria-expanded="false" aria-controls="more-filter-set">Saved views</button>
+          <div class="more-filter-set" id="more-filter-set" hidden>
+            <div class="views" id="saved-views"></div>
+          </div>
+        </div>
 
         <p class="panel-note" id="readings"></p>
 
-        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
+        <section class="tiles tiles-two" id="home-tiles" aria-label="Totals"></section>
 
         <div class="stack" id="attention"></div>
 
@@ -123,13 +126,13 @@
 
   <div class="toast" id="toast" role="status" hidden></div>
 
-  <script src="../assets/js/shared/data.js?v=15430566"></script>
-  <script src="../assets/js/shared/app.js?v=fa4e2225"></script>
-  <script src="../assets/js/shared/lines.js?v=1865effe"></script>
-  <script src="../assets/js/shared/views.js?v=2fb3dd97"></script>
+  <script src="../assets/js/shared/data.js?v=8e8f46b1"></script>
+  <script src="../assets/js/shared/app.js?v=47d751ad"></script>
+  <script src="../assets/js/shared/lines.js?v=0f9d11f8"></script>
+  <script src="../assets/js/shared/views.js?v=f571ae6b"></script>
   <script src="../assets/js/shared/charts.js?v=c7a8f4a5"></script>
   <script src="../assets/js/shared/boards.js?v=147e9674"></script>
   <script src="../assets/js/shared/preview.js?v=2be04593"></script>
-  <script src="../assets/js/pages/home.js?v=7548baf3"></script>
+  <script src="../assets/js/pages/home.js?v=26691134"></script>
 </body>
 </html>

@@ -34,39 +34,30 @@ function redrawTiles() {
   showTiles();
 }
 
+// Two figures, each said once: how many things need a decision and how many are only
+// waiting. The list below breaks each one down, and the readings line says which boards
+// answered, so neither is repeated here.
 function showTiles() {
   const items = everything();
   const answered = [...answers.values()].filter((entry) => entry.summary).length;
   const stop = items.filter((item) => item.tone === 'stop').reduce((sum, item) => sum + item.count, 0);
   const hold = items.filter((item) => item.tone === 'hold').reduce((sum, item) => sum + item.count, 0);
+  const base = answered === BOARDS.length ? 'across all three boards' : `across ${answered} of the three boards`;
 
   const tiles = [
     {
-      label: 'Waiting on you', icon: ICONS.alert, tone: 'is-warn',
-      value: formatNumber(stop + hold),
-      watch: { value: stop + hold, unit: 'things', better: 'below' },
-      note: answered === BOARDS.length ? 'across all three boards' : `across ${answered} of the three boards`,
-      about: 'Added up from what each board says is waiting. It counts things to look at, not hours of work, and a board that did not answer is left out rather than guessed at.'
-    },
-    {
-      label: 'Needs a decision', icon: ICONS.rows, tone: '',
+      label: 'Needs a decision',
       value: formatNumber(stop),
       watch: { value: stop, unit: 'decisions', better: 'below' },
-      note: 'nothing moves until these are settled',
-      about: 'Blocked decisions, open problems and leads nobody has recorded anything against for over a week.'
+      note: base,
+      about: 'Blocked decisions, open problems and leads nobody has recorded anything against for over a week. It counts things to look at, not hours of work, and a board that did not answer is left out rather than guessed at.'
     },
     {
-      label: 'Waiting on someone', icon: ICONS.clock, tone: 'is-info',
+      label: 'Waiting on someone',
       value: formatNumber(hold),
       watch: { value: hold, unit: 'things', better: 'below' },
-      note: 'moving, but not finished',
-      about: 'Waiting on a person, a check or a reply. These do not need a decision from you today, but they stop being other people’s problem if nobody chases them.'
-    },
-    {
-      label: 'Boards answering', icon: ICONS.check, tone: 'is-good',
-      value: `${answered} of ${BOARDS.length}`,
-      note: answered === BOARDS.length ? 'every board was read just now' : 'a board did not answer',
-      about: 'Each board is asked for its own figures when this page opens. Nothing here is kept from a previous visit, so a board that cannot be reached shows as unanswered rather than out of date.'
+      note: base,
+      about: 'Waiting on a person, a check or a reply. These do not need a decision from you today, but they stop being other people’s problem if nobody chases them. A board that did not answer is left out rather than guessed at.'
     }
   ];
 
@@ -84,12 +75,12 @@ function attentionRow(item, withBoard) {
   return row;
 }
 
-function attentionPanel(title, detail, chip, items, withBoard) {
+function attentionPanel(title, detail, items, withBoard) {
   const section = create('section', 'panel');
   const head = create('div', 'panel-head');
   const heading = create('div');
   heading.append(create('h2', '', title), create('p', 'panel-note', detail));
-  head.append(heading, chip);
+  head.append(heading);
   section.append(head);
 
   const list = create('ul', 'attention-list');
@@ -105,76 +96,25 @@ function showList() {
   const items = everything();
   const answered = [...answers.values()].length;
 
-  // Still waiting to hear from the boards is not the same as hearing that nothing
-  // is waiting, so the banner only speaks once every board has answered.
-  if (!items.length && answered < BOARDS.length) {
-    holder.append(create('p', 'empty', 'Reading the boards…'));
+  // Still waiting to hear from the boards is not the same as hearing that nothing is waiting.
+  if (!items.length) {
+    holder.append(create('p', 'empty', answered < BOARDS.length ? 'Reading the boards…' : 'Nothing on any board is waiting on anyone.'));
     return;
   }
-
-  // The one banner: what needs a decision across every board, then what is only
-  // waiting. Both totals come from the list below it, so they cannot disagree.
-  const decisions = items.filter((item) => item.tone === 'stop').reduce((sum, item) => sum + item.count, 0);
-  const waiting = items.filter((item) => item.tone !== 'stop').reduce((sum, item) => sum + item.count, 0);
-  const boards = new Set(items.map((item) => item.board.key)).size;
-
-  holder.append(buildBanner([
-    {
-      count: decisions,
-      one: 'thing needs a decision across the boards.',
-      many: 'things need a decision across the boards.',
-      href: 'boards.html',
-      tone: 'is-stop'
-    },
-    { count: waiting, one: 'is only waiting on someone', many: 'are only waiting on someone', tone: 'is-hold' },
-    { count: boards, one: 'board is reporting', many: 'boards are reporting', tone: '' }
-  ], {
-    action: 'See the boards',
-    calmTitle: 'Nothing on any board is waiting on anyone.',
-    calmNote: 'Worth checking which boards answered — each card on The boards says when it was read.'
-  }));
-
-  if (!items.length) return;
 
   if (state.grouping === 'board') {
     BOARDS.forEach((board) => {
       const group = items.filter((item) => item.board.key === board.key)
         .sort((a, b) => (a.tone === b.tone ? b.count - a.count : a.tone === 'stop' ? -1 : 1));
       if (!group.length) return;
-      const decisions = group.filter((item) => item.tone === 'stop').reduce((sum, item) => sum + item.count, 0);
-      holder.append(attentionPanel(
-        board.name,
-        board.what,
-        statusChip({ tone: decisions ? 'changed' : 'waiting', text: decisions ? `${formatNumber(decisions)} to decide` : 'Nothing to decide' }),
-        group,
-        false
-      ));
+      holder.append(attentionPanel(board.name, board.what, group, false));
     });
   } else {
     URGENCY.forEach(([tone, title, detail]) => {
       const group = items.filter((item) => item.tone === tone).sort((a, b) => b.count - a.count);
       if (!group.length) return;
-      holder.append(attentionPanel(
-        title,
-        detail,
-        statusChip({
-          tone: tone === 'stop' ? 'changed' : 'waiting',
-          text: `${formatNumber(group.reduce((sum, item) => sum + item.count, 0))} in all`
-        }),
-        group,
-        true
-      ));
+      holder.append(attentionPanel(title, detail, group, true));
     });
-  }
-
-  const missing = BOARDS.filter((board) => {
-    const entry = answers.get(board.key);
-    return entry && !entry.summary;
-  });
-  if (missing.length) {
-    const note = create('p', 'panel-note');
-    note.textContent = `${missing.map((board) => board.name).join(' and ')} did not answer, so nothing from ${missing.length === 1 ? 'it' : 'them'} is in this list.`;
-    holder.append(note);
   }
 }
 
@@ -198,12 +138,20 @@ function showReadings() {
     const entry = answers.get(board.key);
     return entry && entry.summary ? `${board.name} ${entry.summary.read}` : null;
   }).filter(Boolean);
+  const missing = BOARDS.filter((board) => {
+    const entry = answers.get(board.key);
+    return entry && !entry.summary;
+  }).map((board) => board.name);
 
-  if (!read.length) {
+  if (!read.length && !missing.length) {
     holder.textContent = 'Asking each board for its own figures…';
     return;
   }
-  holder.textContent = `Read: ${read.join(' · ')}. Each board is read at its own moment, so a figure from one is not a figure from another.`;
+  // Which boards answered, and when each was read, is said here and nowhere else on the page.
+  const parts = [];
+  if (read.length) parts.push(`Read: ${read.join(' · ')}.`);
+  if (missing.length) parts.push(`${missing.join(' and ')} did not answer, so nothing from ${missing.length === 1 ? 'it' : 'them'} is counted.`);
+  holder.textContent = parts.join(' ');
 }
 
 function showExport() {

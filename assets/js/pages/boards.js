@@ -9,7 +9,8 @@ function boardCard(board, summary, problem) {
 
   const top = create('div', 'board-door-top');
   top.append(create('h2', '', board.name), icon(ICONS.forward, 22));
-  card.append(top, create('p', 'board-door-what', board.what));
+  // What the board holds is said once, in the table under the cards.
+  card.append(top);
 
   if (summary) {
     const figures = create('div', 'board-figures');

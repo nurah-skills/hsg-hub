@@ -3,7 +3,7 @@ setUpShell();
 // A preview. The controls are drawn and disabled: these boards read their sheets and write nothing.
 const WAITING = [
   { what: 'Bellview general enquiry', where: 'F-307 · Lead tracker · 41 leads on the sheet', people: ['Kagiso Tau', 'Chloe Naidoo', 'Elton Pillay'] },
-  { what: 'Reactivation — old enquiries', where: 'F-401 · Lead tracker · 78 leads on the sheet', people: ['Lerato Mokoena', 'Sipho Dlamini', 'Ayesha Patel'] },
+  { what: 'Reactivation: old enquiries', where: 'F-401 · Lead tracker · 78 leads on the sheet', people: ['Lerato Mokoena', 'Sipho Dlamini', 'Ayesha Patel'] },
   { what: 'Multi-college course matcher', where: 'F-404 · Lead tracker · two owners recorded', people: ['Imran Ismail', 'Boitumelo Phiri'] },
   { what: 'Jobs marked sent while the stage says otherwise', where: 'Mailer board · 3 rows · nobody agreed to clear them', people: ['Refiloe Sibanda', 'Megan Fourie'] }
 ];

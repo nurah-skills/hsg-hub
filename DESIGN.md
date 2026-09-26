@@ -71,12 +71,14 @@ These are design decisions, not missing work:
 ## Components
 
 - **The menu** — a light column on `--card`, held off the page by a single hairline, with the three boards themselves under **Other boards** at the foot. Three pages fit easily, but the same `clamp()` sizing is kept so the menu behaves like the others on a short screen.
-- **The page header** — the page name and its one-line note, closed by a hairline.
+- **The page header** — the page name and its one-line note, closed by a hairline. A page's own actions (**Save this list** on Home) sit on the right beside **Read the boards again**, never at the foot of the page. A preview page's note does not say "a preview": its banner already does.
 - **The attention list** — on Home, everything the three boards say is waiting, in two groups: **Needs a decision**, meaning somebody has to choose, and **Waiting on someone**, meaning it is moving but not finished. Each row is a count, what it is, and a tag saying which board it came from, and the whole row links into that group on that board. Which group an item lands in is the board's own call, set in its `summary.js`, because the board knows whether a thing is a decision or a queue.
 - **A preview page** — a page for something not built, carrying `.preview-banner` at the top: what is not built, what on the page is invented and what is real, and a link to the reasoning. Controls that would write are drawn and disabled rather than left out, so the shape is honest, and nothing on a preview page is ever counted anywhere else.
 - **A mock** — a small dashed-edge block inside an item on **What's next**, showing what the thing would look like, with a line underneath saying it is made up.
 - **A Soon entry** — a menu row for something that is not built, greyed, with a **Soon** tag, and linking to the part of **What's next** that explains it. It is never a dead control: a menu item that does nothing teaches people not to trust the ones that do.
-- **The readings line** — under the controls on Home, naming when each board was read. Three boards are three separate readings, and a page that shows them together has to say so or it invites a comparison it cannot support.
+- **The readings line** — under the controls on Home, naming when each board was read, and which board did not answer. Three boards are three separate readings, and a page that shows them together has to say so or it invites a comparison it cannot support. Which boards answered is said here and nowhere else on the page.
+- **The Home figures** — two tiles, **Needs a decision** and **Waiting on someone**, each with its (i) and its base ("across all three boards"). They are the only place on Home the two totals appear: there is no banner restating them and no count on the list groups. There is no combined total either, since it would only be the two added together.
+- **Saved views** — behind one secondary button at the end of the filter row (the disclosure the student tracker calls **More filters**; here saved views are the only thing behind it, so the button says so). It opens by itself when the page is showing a saved view, counts the views kept for the page when closed ("Saved views · 2"), reads **Hide saved views** when open, and carries `aria-expanded`/`aria-controls`. The controls fade in over 150ms on `--ease-out` through `@starting-style`, with no slide and no transition under reduced motion. On a phone the set spans the row.
 - **Save this list** — the attention list as a spreadsheet file, through the same `downloadRows()` the boards use. It writes what is on screen, with a full address for each row, so it can be pasted into an agenda.
 - **The board door** — on The boards, one card per board and the whole card is the link. It shows that board's headline figures, how many things are waiting and when it was read. A board that has not answered shows the reason in its place.
 
@@ -98,7 +100,7 @@ Every link to a stylesheet, a script or the logo carries `?v=` and a short hash 
 
 ## Motion
 
-Almost none, and always short: 0.15s ease on colour and shadow, and the menu drawer sliding in. `prefers-reduced-motion` turns transitions off. Nothing animates on load — the page is readable in its first frame.
+Almost none, and always short: 0.15s ease on colour and shadow, the saved-views fade (150ms, `--ease-out`), and the menu drawer sliding in. `prefers-reduced-motion` turns transitions off. Nothing animates on load — the page is readable in its first frame.
 
 ## Writing
 

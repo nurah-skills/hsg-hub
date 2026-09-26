@@ -170,7 +170,7 @@ function buildSavedViews() {
     }
     draw();
     showToast(replaced
-      ? `"${given}" now points at this selection. It is kept in this browser only — to send this view to somebody, send them the page link.`
+      ? `"${given}" now points at this selection. It is kept in this browser only. To send this view to somebody, send them the page link.`
       : `Saved as "${given}", in this browser only. To send this view to somebody, send them the page link: it already carries the selection.`);
     action.focus();
   }
@@ -183,8 +183,38 @@ function buildSavedViews() {
   });
 
   holder.replaceChildren(label, picker, action, naming);
-  refreshSavedViews = () => { if (naming.hidden) draw(); };
+  refreshSavedViews = () => { if (naming.hidden) draw(); showViewsToggle(); };
   draw();
+  setUpViewsToggle(picker);
+}
+
+// Saved views sit behind one button at the end of the filter row, the same disclosure the
+// student tracker calls More filters. Here the only thing behind it is saved views, so the
+// button says so. It opens by itself on arrival when the page is showing a saved view, so
+// "Remove this view" is never hidden; after that it stays however it was left. Closed, it
+// counts the views kept for this page.
+let viewsOpen = null;
+
+function showViewsToggle() {
+  const button = document.getElementById('more-filters');
+  const set = document.getElementById('more-filter-set');
+  if (!button || !set) return;
+  if (viewsOpen === null) viewsOpen = Boolean(Views.matching());
+  const kept = Views.all().length;
+  set.hidden = !viewsOpen;
+  button.setAttribute('aria-expanded', String(viewsOpen));
+  button.textContent = viewsOpen ? 'Hide saved views' : kept ? `Saved views · ${kept}` : 'Saved views';
+}
+
+function setUpViewsToggle(picker) {
+  const button = document.getElementById('more-filters');
+  if (!button) return;
+  button.addEventListener('click', () => {
+    viewsOpen = !viewsOpen;
+    showViewsToggle();
+    if (viewsOpen) (picker.disabled ? document.querySelector('#more-filter-set button:not([hidden])') : picker)?.focus();
+  });
+  showViewsToggle();
 }
 
 // The control has to notice when the selection moves, and no two boards change their

@@ -91,7 +91,7 @@ const RULES = [
   },
   {
     title: 'A blank is not a nothing',
-    detail: 'A lead with no note, a mailer row with no stage, a day with no registration recorded — each means nobody wrote it down. It does not mean nothing happened.',
+    detail: 'A lead with no note, a mailer row with no stage, a day with no registration recorded: each means nobody wrote it down. It does not mean nothing happened.',
     action: 'Ask before acting on an empty cell.'
   },
   {

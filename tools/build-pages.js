@@ -30,9 +30,10 @@ const svg = (paths, size = 20) =>
 const PAGES = [
   { file: 'home.html', script: 'home', name: 'Home', icon: 'home', group: null,
     title: 'Waiting on you', note: 'Everything the three boards say needs you, in one list.',
+    actions: '<button class="button button-secondary button-inline" id="home-export" type="button" data-header-action></button>',
     description: 'Everything across the three HSG boards that needs attention.' },
   { file: 'boards.html', script: 'boards', name: 'The boards', icon: 'boards', group: null,
-    title: 'The boards', note: 'Three boards. Open one to work in it.',
+    title: 'The boards', note: 'Open a board to work in it.',
     description: 'The three HSG boards, and a way in to each.' },
   { file: 'connections.html', script: 'connections', name: 'Connections', icon: 'connections', group: 'Across the boards',
     title: 'Connections', note: 'What the three boards read, what is joined up, and what is not.',
@@ -41,22 +42,22 @@ const PAGES = [
     title: 'Who sees what', note: 'What each role can open on each board today.',
     description: 'What each role can open on each board.' },
   { file: 'whats-next.html', script: 'next', name: "What's next", icon: 'next', group: 'Across the boards',
-    title: "What's next", note: 'What these boards cannot do yet, what each one would answer, and what is in the way.',
+    title: "What's next", note: 'What these boards cannot do yet, and what is in the way.',
     description: 'What the HSG boards cannot do yet, and what is in the way.' },
   { file: 'trends.html', script: 'trends', name: 'Trends', icon: 'trends', group: 'Coming next', soon: true,
-    title: 'Trends', note: 'A preview. What a figure looks like once the boards keep their readings.',
+    title: 'Trends', note: 'What a figure looks like once the boards keep their readings.',
     description: 'A preview of what the HSG boards would show once their readings are kept.' },
   { file: 'analytics.html', script: 'analytics', name: 'Analytics', icon: 'analytics', group: 'Coming next', soon: true,
-    title: 'Analytics', note: 'A preview. What asking a question across the three boards would look like.',
+    title: 'Analytics', note: 'Asking one question across the three boards.',
     description: 'A preview of asking a question across the three HSG boards.' },
   { file: 'alerts.html', script: 'alerts', name: 'Alerts', icon: 'alerts', group: 'Coming next', soon: true,
-    title: 'Alerts', note: 'A preview. Who would be told what, and what the message would say.',
+    title: 'Alerts', note: 'Who would be told what, and what the message would say.',
     description: 'A preview of the Monday morning message from the HSG boards.' },
   { file: 'assign.html', script: 'assign', name: 'Name an owner', icon: 'assign', group: 'Coming next', soon: true,
-    title: 'Name an owner', note: 'A preview. Settling who is doing something about it, from the board itself.',
+    title: 'Name an owner', note: 'Settling who is doing something about it, from the board itself.',
     description: 'A preview of naming an owner from an HSG board.' },
   { file: 'join.html', script: 'join', name: 'Join the records', icon: 'join', group: 'Coming next', soon: true,
-    title: 'Join the records', note: 'A preview. One person, four records, and the identifier that would tie them together.',
+    title: 'Join the records', note: 'One person, four records, and what would tie them together.',
     description: 'A preview of joining a registration to the lead and the campaign that started it.' }
 ];
 
@@ -78,6 +79,13 @@ function menu(current) {
 
   return lines.join('\n');
 }
+
+// Saved views sit behind one button at the end of a filter row, so the row shows the
+// filters people actually change. views.js opens it by itself when a saved view is showing.
+const savedViews = `<button class="button button-secondary button-inline more-filters" id="more-filters" type="button" aria-expanded="false" aria-controls="more-filter-set">Saved views</button>
+          <div class="more-filter-set" id="more-filter-set" hidden>
+            <div class="views" id="saved-views"></div>
+          </div>`;
 
 // The banner every preview page wears, so nobody mistakes one for a working page
 const preview = (what) => `        <p class="preview-banner">
@@ -137,7 +145,8 @@ ${menu(page.file)}
           <div>
             <h1>${page.title}</h1>
             <p class="page-note">${page.note}</p>
-          </div>
+          </div>${page.actions ? `
+          ${page.actions}` : ''}
         </div>
 
 ${body}
@@ -162,13 +171,12 @@ ${body}
 const BODIES = {
   home: `        <div class="controls">
           <div class="segmented" id="group-picker" role="group" aria-label="Group by"></div>
-          <button class="button button-secondary button-inline" id="home-export" type="button"></button>
-        
-          <div class="views" id="saved-views"></div></div>
+          ${savedViews}
+        </div>
 
         <p class="panel-note" id="readings"></p>
 
-        <section class="tiles tiles-four" id="home-tiles" aria-label="Totals"></section>
+        <section class="tiles tiles-two" id="home-tiles" aria-label="Totals"></section>
 
         <div class="stack" id="attention"></div>
 
@@ -197,7 +205,8 @@ const BODIES = {
           <label class="sr-only" for="college-filter">College</label>
           <select class="select" id="college-filter"></select>
         
-          <div class="views" id="saved-views"></div></div>
+          ${savedViews}
+        </div>
 
         <div class="grid">
           <section class="panel span-8" aria-labelledby="chart-title">
@@ -224,7 +233,6 @@ const BODIES = {
             <div class="table-wrap">
               <table class="results" id="weeks-table"></table>
             </div>
-            <p class="panel-note">Five measures from three boards on one page. Today that means opening three boards and holding the answer in your head.</p>
           </section>
         </div>
 
@@ -247,7 +255,7 @@ const BODIES = {
             <h2 id="email-title">What Monday's message would say</h2>
           </div>
           <div class="email-preview" id="email-body"></div>
-          <p class="panel-note">Built from what the three boards answer right now. It says what is waiting and nothing else — no charts, no scores, nothing that needs a reply.</p>
+          <p class="panel-note">Built from what the three boards answer right now. It says what is waiting and nothing else: no charts, no scores, nothing that needs a reply.</p>
         </section>
 
         <section class="panel" id="questions" aria-label="What this would take"></section>`,
@@ -272,7 +280,7 @@ const BODIES = {
             <h2 id="assign-title">Things with nobody against them</h2>
           </div>
           <div class="mock" id="assign-rows"></div>
-          <p class="panel-note">Four real examples, taken from what the boards say is waiting. Today each of these is settled somewhere else — a message, a meeting, a note that gets lost.</p>
+          <p class="panel-note">Four real examples, taken from what the boards say is waiting. Today each of these is settled somewhere else: a message, a meeting, a note that gets lost.</p>
         </section>
 
         <section class="panel" aria-labelledby="after-title">

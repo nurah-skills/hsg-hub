@@ -31,7 +31,7 @@ function showChain() {
 function showGap() {
   const rows = [
     ['What is missing', 'One identifier the person carries from the form, through the mail, to the registration. Nothing on the sheets does that today, so these four records sit on three boards and nothing says they are the same person.'],
-    ['What it would let anyone say', 'That this registration came from that form, and that this mail was sent in between. Nothing more than that — but that is the whole question.'],
+    ['What it would let anyone say', 'That this registration came from that form, and that this mail was sent in between. Nothing more than that, but that is the whole question.'],
     ['What it would still not prove', 'That the mail caused the registration. Two things happening in order is not one causing the other, and no board here would say otherwise.'],
     ['Why it is not a quick one', 'It starts on the sheets rather than on a board, so it needs the people who keep them. No amount of work on these pages can produce it.']
   ];
