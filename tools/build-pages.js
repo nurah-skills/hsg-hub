@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
 
@@ -357,6 +358,14 @@ const BODIES = {
           <dl class="figure-list" id="signin-list"></dl>
         </section>`
 };
+
+// Before anything is written: every tile has to be able to say what it does not prove.
+try {
+  execFileSync(process.execPath, [path.join(__dirname, 'check-tiles.js')], { stdio: 'inherit' });
+} catch (error) {
+  console.error('Nothing was built.');
+  process.exit(1);
+}
 
 PAGES.forEach((page) => {
   const body = BODIES[page.script];
