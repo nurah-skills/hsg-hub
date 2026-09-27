@@ -45,17 +45,17 @@ Every figure, table and scorecard uses `font-variant-numeric: tabular-nums`.
 
 ## Space and shape
 
-**Three shapes, and nothing else.**
+**Three tokens carry nearly every corner.**
 
 | Token | Size | For |
 | --- | --- | --- |
-| `--radius` | 16px | Surfaces: panels, tiles, cards, dialogs |
-| `--radius-control` | 10px | Controls: buttons, inputs, selects, the menu, notices, the toast |
+| `--radius` | 12px | Surfaces: panels, tiles, cards, dialogs |
+| `--radius-control` | 10px | Controls: buttons, inputs, selects, notices, the toast |
 | `--radius-mark` | 4px | Marks: small bars and swatches |
 
-Pills (`999px`) are for chips and counts only; `50%` is for avatars. Nothing else rounds its own corners.
+A few set their own, and only these: the navy banner (14px), menu rows (9px), the segmented picker's track (10px) and its buttons (8px), chart key lines (2px), and the sign-in panel (24px). Pills (`999px`) are for chips and counts; `50%` is for avatars.
 
-**Depth instead of outlines.** A surface lifts off the page with `--shell` rather than drawing a border around itself. In dark mode `--shell` becomes a single hairline, because a shadow on a dark ground reads as dirt.
+**Depth instead of outlines.** A panel lifts off the page with `--shell`, a faint shadow, rather than drawing a border around itself; only `.card` adds a hairline. The board is light only. On paper the shadow goes and each surface gets a thin border instead, because a printer drops faint shadows.
 
 **The page rhythm is 22px.** `.app-main` spaces its children by 22px and `.grid` uses the same gap. Cards in a row stretch to the same depth, so nothing floats above a gap.
 
